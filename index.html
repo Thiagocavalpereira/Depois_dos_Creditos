@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depois dos Créditos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="logo" onclick="scrollToTop(event)">DEPOIS DOS CRÉDITOS</a>
+
+        <div class="nav-links" id="nav-links">
+            <a href="#filmes" onclick="scrollToSection(event, 'filmes')">Filmes</a>
+            <a href="#" id="nav-participar" onclick="openAuth()">Participar</a>
+        </div>
+
+        <div class="nav-actions">
+            <div class="nav-search" id="nav-search">
+                <div class="nav-search-bar">
+                    <span class="search-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                    </span>
+                    <input type="text" id="user-search-input" placeholder="Buscar filmes e usuários..." autocomplete="off" oninput="buscarGlobal(this.value, 'nav')" onfocus="abrirTelaBusca()" onkeydown="handleSearchKey(event)">
+                    <button type="button" class="btn-explore" id="btn-explore" onclick="abrirTelaBusca()" title="Explorar filmes e usuários">
+                        <svg class="btn-explore-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <span>Explorar</span>
+                    </button>
+                </div>
+                <div class="search-results" id="search-results"></div>
+            </div>
+        </div>
+
+        <div class="nav-user" id="nav-user" style="display: none;">
+            <span class="nav-user-name" id="nav-user-name"></span>
+            <div class="profile-icon" onclick="openProfile()" title="Meu perfil">
+                <img id="profile-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Perfil">
+            </div>
+            <button class="btn-ghost" onclick="logout()">Sair</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <span class="badge">Destaque da Semana</span>
+            <h1 class="hero-title" id="hero-title">Duna: Parte Dois</h1>
+            <p class="hero-description" id="hero-description">
+                Uma jornada épica que redefine o sci-fi moderno. Confira o que a comunidade achou da obra de Denis Villeneuve.
+            </p>
+            <div class="hero-meta">
+                <span class="rating" id="hero-rating">★ —</span>
+                <span class="meta" id="hero-reviews-count">0 avaliações</span>
+            </div>
+            <button class="btn-main" id="hero-btn" onclick="abrirFilmeDestaque()">Ver Avaliações</button>
+        </div>
+    </header>
+
+    <main class="container" id="filmes">
+        <div class="section-header">
+            <h2 class="section-title">Catálogo de Filmes</h2>
+            <p class="section-subtitle">Explore os títulos e leia o que a comunidade está dizendo.</p>
+        </div>
+
+        <section class="ad-banner" id="ad-banner" onclick="abrirAdModal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();abrirAdModal();}" role="button" tabindex="0" aria-label="Abrir campanha Obsolescência Programada">
+            <div class="ad-banner-media">
+                <img src="img/obsolecencia programada.jpg" alt="Campanha Obsolescência Programada">
+            </div>
+            <div class="ad-banner-copy">
+                <span class="ad-banner-kicker">Campanha · Patrocinado</span>
+                <h3>Obsolescência Programada</h3>
+                <p>O sistema não falha por acaso. Foi desenhado para falhar. Baterias curtas, software lento, reparos caros e atualizações que te deixam de fora.</p>
+                <button type="button" class="ad-banner-btn" onclick="event.stopPropagation(); abrirAdModal(true)">Saiba mais</button>
+            </div>
+        </section>
+
+        <div class="movie-grid" id="movie-grid"></div>
+    </main>
+
+    <!-- Modal Login / Cadastro -->
+    <div id="auth-modal" class="auth-modal" onclick="closeAuthOnBackdrop(event)">
+        <div class="auth-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeAuth()" aria-label="Fechar">&times;</span>
+
+            <div id="login-form">
+                <h2>Bem-vindo de volta</h2>
+                <p class="auth-subtitle">Entre para avaliar filmes e curtir reviews.</p>
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Senha</label>
+                    <input type="password" id="login-password" placeholder="Sua senha">
+                </div>
+                <p class="form-error" id="login-error"></p>
+                <button class="btn-main btn-full" onclick="fazerLogin()">Entrar</button>
+                <p class="auth-switch">Não tem conta? <span onclick="showRegister()">Criar conta</span></p>
+                <p class="auth-switch"><span onclick="showForgotPassword()">Esqueci a senha</span></p>
+            </div>
+
+            <div id="forgot-form" style="display: none;">
+                <h2>Recuperar senha</h2>
+                <p class="auth-subtitle">Informe seu email cadastrado e defina uma nova senha.</p>
+                <div class="form-group">
+                    <label for="forgot-email">Email</label>
+                    <input type="email" id="forgot-email" placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="forgot-password">Nova senha</label>
+                    <input type="password" id="forgot-password" placeholder="Mínimo 6 caracteres">
+                </div>
+                <div class="form-group">
+                    <label for="forgot-password-confirm">Confirmar nova senha</label>
+                    <input type="password" id="forgot-password-confirm" placeholder="Repita a nova senha">
+                </div>
+                <p class="form-error" id="forgot-error"></p>
+                <button class="btn-main btn-full" onclick="recuperarSenha()">Redefinir senha</button>
+                <p class="auth-switch">Lembrou a senha? <span onclick="showLogin()">Voltar ao login</span></p>
+            </div>
+
+            <div id="register-form" style="display: none;">
+                <h2>Criar conta</h2>
+                <p class="auth-subtitle">Junte-se à comunidade de cinéfilos.</p>
+                <div class="form-group">
+                    <label for="register-name">Nome</label>
+                    <input type="text" id="register-name" placeholder="Como quer ser chamado">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Senha</label>
+                    <input type="password" id="register-password" placeholder="Mínimo 6 caracteres">
+                </div>
+                <p class="form-error" id="register-error"></p>
+                <button class="btn-main btn-full" onclick="fazerCadastro()">Cadastrar</button>
+                <p class="auth-switch">Já tem conta? <span onclick="showLogin()">Entrar</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Filme -->
+    <div id="filme-modal" class="auth-modal" onclick="fecharFilmeOnBackdrop(event)">
+        <div class="filme-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="fecharFilme()" aria-label="Fechar">&times;</span>
+
+            <div class="filme-header">
+                <div>
+                    <h2 id="filme-titulo"></h2>
+                    <p class="meta" id="filme-meta"></p>
+                </div>
+                <div class="filme-header-actions">
+                    <button class="btn-favorite" id="btn-favorite" onclick="toggleFavorito()" style="display: none;" aria-label="Favoritar filme">
+                        <span id="favorite-icon">🤍</span>
+                        <span id="favorite-label">Favoritar</span>
+                    </button>
+                    <div class="filme-stats">
+                        <span class="rating" id="filme-nota-media">★ —</span>
+                        <span class="meta" id="filme-total-reviews">0 avaliações</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="guest-notice" class="guest-notice">
+                <span>👁</span>
+                <p>Você está navegando como visitante. <strong onclick="openAuth()">Crie uma conta</strong> para avaliar filmes e curtir reviews.</p>
+            </div>
+
+            <div id="review-form-section" class="review-form-section" style="display: none;">
+                <h3>Sua avaliação</h3>
+                <div class="form-group">
+                    <label>Nota</label>
+                    <div class="star-rating" id="star-rating">
+                        <button type="button" class="star-btn" data-value="1">★</button>
+                        <button type="button" class="star-btn" data-value="2">★</button>
+                        <button type="button" class="star-btn" data-value="3">★</button>
+                        <button type="button" class="star-btn" data-value="4">★</button>
+                        <button type="button" class="star-btn" data-value="5">★</button>
+                        <button type="button" class="star-btn" data-value="6">★</button>
+                        <button type="button" class="star-btn" data-value="7">★</button>
+                        <button type="button" class="star-btn" data-value="8">★</button>
+                        <button type="button" class="star-btn" data-value="9">★</button>
+                        <button type="button" class="star-btn" data-value="10">★</button>
+                    </div>
+                    <span class="nota-label" id="nota-selecionada">Selecione uma nota</span>
+                </div>
+                <div class="form-group">
+                    <label for="review-texto">Comentário</label>
+                    <textarea id="review-texto" rows="4" placeholder="Conte o que achou do filme..."></textarea>
+                </div>
+                <p class="form-error" id="review-error"></p>
+                <button class="btn-main" onclick="enviarReview()">Publicar avaliação</button>
+            </div>
+
+            <div class="reviews-toolbar">
+                <h3>Avaliações da comunidade</h3>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="populares" onclick="ordenarReviews('populares', this)">Populares</button>
+                    <button class="filter-tab" data-filter="recentes" onclick="ordenarReviews('recentes', this)">Recentes</button>
+                    <button class="filter-tab" data-filter="antigas" onclick="ordenarReviews('antigas', this)">Mais antigas</button>
+                </div>
+            </div>
+
+            <div id="lista-reviews" class="reviews-list"></div>
+        </div>
+    </div>
+
+    <!-- Modal Perfil -->
+    <div id="profile-modal" class="auth-modal" onclick="closeProfileOnBackdrop(event)">
+        <div class="profile-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeProfile()" aria-label="Fechar">&times;</span>
+
+            <div class="profile-header">
+                <div class="profile-avatar-wrap">
+                    <img id="profile-preview-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar">
+                    <label class="avatar-edit-btn" for="profile-upload" title="Alterar foto">📷</label>
+                    <input type="file" id="profile-upload" accept="image/*" hidden>
+                </div>
+                <div class="profile-header-info">
+                    <h2 id="profile-display-name">Meu Perfil</h2>
+                    <p class="profile-email" id="profile-email"></p>
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <strong id="profile-stat-reviews">0</strong>
+                            <span>Avaliações</span>
+                        </div>
+                        <div class="profile-stat">
+                            <strong id="profile-stat-favorites">0</strong>
+                            <span>Favoritos</span>
+                        </div>
+                        <div class="profile-stat">
+                            <strong id="profile-stat-avg">—</strong>
+                            <span>Nota média</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="profile-tabs" id="profile-tabs-nav">
+                <button class="profile-tab active" data-tab="avaliados" onclick="switchProfileTab('avaliados', this)">Avaliados</button>
+                <button class="profile-tab" data-tab="favoritos" onclick="switchProfileTab('favoritos', this)">Favoritos</button>
+                <button class="profile-tab profile-tab-own" data-tab="denuncias" onclick="switchProfileTab('denuncias', this)">Denúncias</button>
+                <button class="profile-tab profile-tab-own" data-tab="configuracoes" onclick="switchProfileTab('configuracoes', this)">Configurações</button>
+            </nav>
+
+            <div class="profile-tab-content" id="tab-avaliados">
+                <div class="profile-movie-list" id="profile-rated-list"></div>
+            </div>
+
+            <div class="profile-tab-content" id="tab-favoritos" style="display: none;">
+                <div class="profile-movie-list" id="profile-favorites-list"></div>
+            </div>
+
+            <div class="profile-tab-content" id="tab-denuncias" style="display: none;">
+                <div class="denuncias-info">
+                    <p>Reporte avaliações suspeitas diretamente nos comentários dos filmes. Suas denúncias aparecem aqui.</p>
+                </div>
+                <div class="denuncias-list" id="profile-denuncias-list"></div>
+            </div>
+
+            <div class="profile-tab-content" id="tab-configuracoes" style="display: none;">
+                <div class="settings-section">
+                    <h3>Informações da conta</h3>
+                    <div class="form-group">
+                        <label for="profile-name">Nome de exibição</label>
+                        <input type="text" id="profile-name" placeholder="Seu nome">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="profile-email-input" disabled>
+                        <span class="field-hint">O email não pode ser alterado.</span>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Alterar senha</h3>
+                    <div class="form-group">
+                        <label for="profile-senha-atual">Senha atual</label>
+                        <input type="password" id="profile-senha-atual" placeholder="Digite sua senha atual">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-senha-nova">Nova senha</label>
+                        <input type="password" id="profile-senha-nova" placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <p class="form-error" id="profile-settings-error"></p>
+                    <button class="btn-main btn-full" onclick="salvarPerfil()">Salvar alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Perfil Público -->
+    <div id="public-profile-modal" class="auth-modal" onclick="closePublicProfileOnBackdrop(event)">
+        <div class="profile-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closePublicProfile()" aria-label="Fechar">&times;</span>
+
+            <div class="profile-header">
+                <div class="profile-avatar-wrap">
+                    <img id="public-profile-avatar" src="" alt="Avatar">
+                </div>
+                <div class="profile-header-info">
+                    <h2 id="public-profile-name"></h2>
+                    <p class="profile-email profile-public-since" id="public-profile-since"></p>
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <strong id="public-stat-reviews">0</strong>
+                            <span>Avaliações</span>
+                        </div>
+                        <div class="profile-stat">
+                            <strong id="public-stat-favorites">0</strong>
+                            <span>Favoritos</span>
+                        </div>
+                        <div class="profile-stat">
+                            <strong id="public-stat-avg">—</strong>
+                            <span>Nota média</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="profile-tabs">
+                <button class="profile-tab active" data-tab="public-avaliados" onclick="switchPublicProfileTab('public-avaliados', this)">Avaliados</button>
+                <button class="profile-tab" data-tab="public-favoritos" onclick="switchPublicProfileTab('public-favoritos', this)">Favoritos</button>
+            </nav>
+
+            <div class="profile-tab-content" id="tab-public-avaliados">
+                <div class="profile-movie-list" id="public-rated-list"></div>
+            </div>
+
+            <div class="profile-tab-content" id="tab-public-favoritos" style="display: none;">
+                <div class="profile-movie-list" id="public-favorites-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Busca / Explorar -->
+    <div id="search-modal" class="auth-modal search-modal" onclick="closeSearchOnBackdrop(event)">
+        <div class="search-screen" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="fecharTelaBusca()" aria-label="Fechar">&times;</span>
+
+            <div class="search-screen-header">
+                <div class="search-screen-icon" aria-hidden="true">🎬</div>
+                <h2>Explorar</h2>
+                <p class="search-screen-subtitle">Encontre filmes e perfis de cinéfilos na comunidade</p>
+            </div>
+
+            <div class="search-screen-input-wrap">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="search-screen-input" placeholder="Digite o nome de um filme ou usuário..." autocomplete="off" oninput="buscarGlobal(this.value, 'screen')">
+            </div>
+
+            <div class="search-filter-tabs">
+                <button class="search-filter-tab active" data-filter="todos" onclick="setSearchFilter('todos', this)">Todos</button>
+                <button class="search-filter-tab" data-filter="filmes" onclick="setSearchFilter('filmes', this)">Filmes</button>
+                <button class="search-filter-tab" data-filter="usuarios" onclick="setSearchFilter('usuarios', this)">Usuários</button>
+            </div>
+
+            <div class="search-screen-results" id="search-screen-results">
+                <div class="search-placeholder">
+                    <span>✨</span>
+                    <p>Comece a digitar para buscar filmes e usuários</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Reportar Avaliação -->
+    <div id="report-modal" class="auth-modal" onclick="closeReportOnBackdrop(event)">
+        <div class="report-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeReportModal()" aria-label="Fechar">&times;</span>
+
+            <div class="report-header">
+                <div class="report-header-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                </div>
+                <h2>Reportar avaliação</h2>
+                <p class="report-subtitle">Ajude a manter a comunidade segura. Sua denúncia será analisada pela nossa equipe.</p>
+            </div>
+
+            <div class="report-preview" id="report-preview"></div>
+
+            <div class="form-group">
+                <label>Motivo da denúncia</label>
+                <div class="report-motivo-grid" id="report-motivo-grid">
+                    <button type="button" class="report-motivo-btn active" data-value="spam" onclick="selectReportMotivo(this)">
+                        <span class="motivo-icon">📢</span>
+                        <span class="motivo-label">Spam</span>
+                        <span class="motivo-desc">Propaganda ou conteúdo repetitivo</span>
+                    </button>
+                    <button type="button" class="report-motivo-btn" data-value="ofensivo" onclick="selectReportMotivo(this)">
+                        <span class="motivo-icon">🚫</span>
+                        <span class="motivo-label">Ofensivo</span>
+                        <span class="motivo-desc">Linguagem ou conteúdo inadequado</span>
+                    </button>
+                    <button type="button" class="report-motivo-btn" data-value="falso" onclick="selectReportMotivo(this)">
+                        <span class="motivo-icon">🎭</span>
+                        <span class="motivo-label">Falso</span>
+                        <span class="motivo-desc">Avaliação enganosa ou falsa</span>
+                    </button>
+                    <button type="button" class="report-motivo-btn" data-value="spoiler" onclick="selectReportMotivo(this)">
+                        <span class="motivo-icon">👁</span>
+                        <span class="motivo-label">Spoiler</span>
+                        <span class="motivo-desc">Revela plot sem aviso</span>
+                    </button>
+                    <button type="button" class="report-motivo-btn" data-value="outro" onclick="selectReportMotivo(this)">
+                        <span class="motivo-icon">💬</span>
+                        <span class="motivo-label">Outro</span>
+                        <span class="motivo-desc">Outro motivo não listado</span>
+                    </button>
+                </div>
+                <input type="hidden" id="report-motivo" value="spam">
+            </div>
+
+            <div class="form-group">
+                <label for="report-detalhes">Detalhes adicionais <span class="label-optional">(opcional)</span></label>
+                <textarea id="report-detalhes" rows="3" placeholder="Conte mais sobre o que motivou a denúncia..."></textarea>
+            </div>
+            <p class="form-error" id="report-error"></p>
+            <button class="btn-report-submit" onclick="enviarDenuncia()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 2 11 13"/>
+                    <path d="M22 2 15 22 11 13 2 9 22 2z"/>
+                </svg>
+                Enviar denúncia
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal da campanha Obsolescência Programada -->
+    <div id="ad-modal" class="auth-modal" onclick="closeAdModalOnBackdrop(event)">
+        <div class="ad-modal-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="fecharAdModal()" aria-label="Fechar">&times;</span>
+            <div class="ad-modal-media">
+                <video id="ad-modal-video" controls playsinline preload="metadata" poster="img/obsolecencia programada.jpg">
+                    <source src="vid/obsolecencia programada.mov" type="video/mp4">
+                    <source src="vid/obsolecencia programada.mov" type="video/quicktime">
+                    Seu navegador não reproduz este vídeo.
+                </video>
+            </div>
+            <div class="ad-modal-body">
+                <span class="ad-modal-kicker">Campanha · Patrocinado</span>
+                <h2>Obsolescência Programada</h2>
+                <p class="ad-modal-lead">O sistema não falha por acaso. Foi desenhado para falhar — e trocar o que ainda funciona virou o modelo de negócio.</p>
+                <ul class="ad-modal-features">
+                    <li>🔋 Baterias que não duram</li>
+                    <li>⚙️ Software que fica lento</li>
+                    <li>🔒 Reparos difíceis ou caros</li>
+                    <li>🔄 Atualizações que excluem</li>
+                </ul>
+                <p class="ad-modal-quote">Repara. Reutiliza. Exige direitos. Menos consumo. Mais futuro.</p>
+                <div class="ad-modal-actions">
+                    <button type="button" class="btn-main" onclick="assistirCampanha()">Assistir agora</button>
+                    <a class="btn-ghost" href="https://pt.wikipedia.org/wiki/Obsolesc%C3%AAncia_programada" target="_blank" rel="noopener noreferrer">Saiba mais</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra lateral de anúncio -->
+    <aside class="ad-sidebar closed" id="ad-sidebar">
+        <button class="ad-close" onclick="fecharAnuncio()" aria-label="Fechar anúncio">&times;</button>
+        <div class="ad-badge">Patrocinado</div>
+        <div class="ad-content">
+            <div class="ad-poster">
+                <video id="ad-sidebar-video" muted loop playsinline preload="metadata" poster="img/obsolecencia programada.jpg">
+                    <source src="vid/obsolecencia programada.mov" type="video/mp4">
+                    <source src="vid/obsolecencia programada.mov" type="video/quicktime">
+                </video>
+                <div class="ad-poster-overlay"></div>
+            </div>
+            <h3 class="ad-title">Obsolescência Programada</h3>
+            <p class="ad-text">O sistema não falha por acaso. Foi desenhado para falhar.</p>
+            <ul class="ad-features">
+                <li>🔋 Baterias que não duram</li>
+                <li>⚙️ Software que fica lento</li>
+                <li>🔒 Reparos difíceis ou caros</li>
+            </ul>
+            <div class="ad-actions">
+                <button type="button" class="ad-cta" onclick="abrirAdModal(true)">Assistir campanha</button>
+                <button type="button" class="ad-cta-secondary" onclick="abrirSaibaMais()">Saiba mais</button>
+            </div>
+        </div>
+    </aside>
+
+    <div id="toast" class="toast"></div>
+
+    <footer class="footer">
+        <p>&copy; 2026 DEPOIS DOS CRÉDITOS — Uma comunidade feita por fãs, para fãs de cinema.</p>
+    </footer>
+
+<script>
+const AVATAR_PADRAO = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+
+const filmes = [
+    {
+        id: 'duna-parte-dois',
+        titulo: 'Duna: Parte Dois',
+        genero: 'Sci-Fi',
+        ano: 2024,
+        imagem: 'https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/8c/49/56/8c4956c5-a2c0-c2e2-d890-09b52b668238/de0105dd-710c-4232-b517-282f14bade4b_DUNE_PART2_PVOD_H_DD_KA_TT_CVRART_3840x2160_300dpi_BR-p3.lsr/1200x675.jpg',
+        descricao: 'Paul Atreides une-se a Chani e aos Fremen enquanto busca vingança contra os conspiradores que destruíram sua família.'
+    },
+    {
+        id: 'oppenheimer',
+        titulo: 'Oppenheimer',
+        genero: 'Drama',
+        ano: 2023,
+        imagem: 'https://images4.alphacoders.com/132/thumb-1920-1323605.jpeg',
+        descricao: 'A história do físico J. Robert Oppenheimer e seu papel no desenvolvimento da bomba atômica.'
+    },
+    {
+        id: 'the-batman',
+        titulo: 'The Batman',
+        genero: 'Ação',
+        ano: 2022,
+        imagem: 'https://wallpaperbat.com/img/14501460-the-batman-2021-desktop-wallpaper.jpg',
+        descricao: 'Batman investiga a corrupção em Gotham quando o Charada inicia uma série de assassinatos.'
+    },
+    {
+        id: 'blade-runner-2049',
+        titulo: 'Blade Runner 2049',
+        genero: 'Sci-Fi',
+        ano: 2017,
+        imagem: 'https://images4.alphacoders.com/866/866590.jpg',
+        descricao: 'Um jovem blade runner descobre um segredo enterrado há muito tempo que pode mergulhar a sociedade no caos.'
+    },
+    {
+        id: 'interestelar',
+        titulo: 'Interestelar',
+        genero: 'Sci-Fi',
+        ano: 2014,
+        imagem: 'https://m.media-amazon.com/images/S/pv-target-images/144718a9727062e06b9ebb1e1e7cc389d6eb2a6732dff8ae688c6487eebbdef8.jpg',
+        descricao: 'Uma equipe de exploradores viaja por um buraco de minhoca no espaço para garantir a sobrevivência da humanidade.'
+    },
+    {
+        id: 'parasita',
+        titulo: 'Parasita',
+        genero: 'Thriller',
+        ano: 2019,
+        imagem: 'https://images2.alphacoders.com/112/1122541.jpg',
+        descricao: 'A simbiose entre duas famílias — uma rica e outra pobre — gera consequências inesperadas.'
+    },
+    {
+        id: 'matrix',
+        titulo: 'Matrix',
+        genero: 'Sci-Fi',
+        ano: 1999,
+        imagem: 'img/matrix-capa.jpg',
+        descricao: 'Um hacker descobre que a realidade é uma simulação e é recrutado para a rebelião contra as máquinas.'
+    },
+    {
+        id: 'coringa',
+        titulo: 'Coringa',
+        genero: 'Drama',
+        ano: 2019,
+        imagem: 'https://m.media-amazon.com/images/S/pv-target-images/7de9bdaf287c0579ea16a70a62259ef00415feb09d1b59f49436f3b1571d3763.jpg',
+        descricao: 'A origem trágica de Arthur Fleck, um comediante fracassado que se transforma no icônico vilão de Gotham.'
+    },
+    {
+        id: 'vingadores-ultimato',
+        titulo: 'Vingadores: Ultimato',
+        genero: 'Ação',
+        ano: 2019,
+        imagem: 'https://blog.explorersclub.com.br/wp-content/uploads/2024/04/Vingadores-Ultimato.webp',
+        descricao: 'Os Vingadores restantes se unem para reverter o estalo de Thanos e restaurar o universo.'
+    },
+    {
+        id: 'pulp-fiction',
+        titulo: 'Pulp Fiction',
+        genero: 'Crime',
+        ano: 1994,
+        imagem: 'https://m.media-amazon.com/images/S/pv-target-images/a5c7216f2dcbdea86f7f349a01241116d4513f5bc2ea052cd2a7f96ea0d66ffc.jpg',
+        descricao: 'Histórias entrelaçadas de criminosos, boxeadores e gângsters em Los Angeles.'
+    },
+    {
+        id: 'o-poderoso-chefao',
+        titulo: 'O Poderoso Chefão',
+        genero: 'Crime',
+        ano: 1972,
+        imagem: 'https://fbi.cults3d.com/uploaders/34614944/illustration-file/970dafa2-ef44-4195-91d7-d0e442f3e6a9/6e735d75e9147233c72226af48fb1cf2c0fe1918275b863a3e9800e09e7e2c43.jpg',
+        descricao: 'A saga da família Corleone e sua ascensão no submundo do crime organizado.'
+    },
+    {
+        id: 'clube-da-luta',
+        titulo: 'Clube da Luta',
+        genero: 'Drama',
+        ano: 1999,
+        imagem: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT960ZQVtTxQ3p8NNIB27Ria9Kiy239K4ZRXh8_LfyI26CD8b-JpGf_2A&s=10',
+        descricao: 'Um funcionario insone e um vendedor de sabonetes formam um clube de luta clandestino.'
+    },
+    {
+        id: 'a-origem',
+        titulo: 'A Origem',
+        genero: 'Sci-Fi',
+        ano: 2010,
+        imagem: 'https://m.media-amazon.com/images/S/pv-target-images/4a14a38007c2c2b74f152b2e90c20eee73202fd82b9ce6426578d21ac7598b85.png',
+        descricao: 'Um ladrão especializado em roubar segredos do subconsciente é incumbido de plantar uma ideia.'
+    },
+    {
+        id: 'whiplash',
+        titulo: 'Whiplash',
+        genero: 'Drama',
+        ano: 2014,
+        imagem: 'https://wallpapers.com/images/hd/whiplash-movie-drum-k3uai9xoihgly7um.jpg',
+        descricao: 'Um jovem baterista enfrenta um instrutor implacável em uma escola de música de elite.'
+    },
+    {
+        id: 'mad-max-fury-road',
+        titulo: 'Mad Max: Estrada da Fúria',
+        genero: 'Ação',
+        ano: 2015,
+        imagem: 'https://obarquinhocultural.com/wp-content/uploads/2016/03/mad-max-estrada-da-furia-fury-road-imperdc3advel-resenha-crc3adtica-zoom-news.jpg',
+        descricao: 'Max e Furiosa fogem de um tirano em uma perseguição implacável pelo deserto pós-apocalíptico.'
+    },
+    {
+        id: 'everything-everywhere',
+        titulo: 'Tudo em Todo Lugar ao Mesmo Tempo',
+        genero: 'Sci-Fi',
+        ano: 2022,
+        imagem: 'https://folhacg.com.br/wp-content/uploads/2023/02/Everything-Everywhere-Principal.jpg',
+        descricao: 'Uma lavanderia é arrastada para uma aventura multiversal quando precisa salvar a existência.'
+    },
+    {
+        id: 'barbie',
+        titulo: 'Barbie',
+        genero: 'Comédia',
+        ano: 2023,
+        imagem: 'https://wallpapers.com/images/featured/barbie-movie-ttzb5nkst5zsb5rn.jpg',
+        descricao: 'Barbie vive uma crise existencial e parte para o mundo real em busca de respostas.'
+    },
+    {
+    id: 'carros-2',
+    titulo: 'Carros 2',
+    genero: 'Animação',
+    ano: 2011,
+    imagem: 'https://images4.alphacoders.com/144/144758.jpg',
+    descricao: 'O astro das corridas Relâmpago McQueen e seu amigo Mate viajam pelo mundo para o Grand Prix Mundial, mas Mate acaba se envolvendo em uma intriga internacional de espionagem.'
+    }
+];
+
+let sessaoAtual = null;
+let filmeAtual = null;
+let reviewsAtuais = [];
+let notaSelecionada = 0;
+let perfilPublicoAtual = null;
+let reviewParaDenunciar = null;
+let destaqueSemanaId = null;
+
+const MODAIS = ['auth-modal', 'filme-modal', 'profile-modal', 'public-profile-modal', 'report-modal', 'search-modal', 'ad-modal'];
+const CAMPANHA_URL = 'https://pt.wikipedia.org/wiki/Obsolesc%C3%AAncia_programada';
+const AD_PRIMEIRO_ATRASO_MS = 8000;
+const AD_INTERVALO_MS = 2 * 60 * 1000;
+let searchFilterAtual = 'todos';
+let ultimaBuscaTermo = '';
+let adTimer = null;
+let formularioRespostaAberto = null;
+
+function fecharTodosModais() {
+    MODAIS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+    reviewParaDenunciar = null;
+    pausarVideosAnuncio();
+}
+
+function getDenuncias() {
+    return JSON.parse(localStorage.getItem('ddc_denuncias') || '[]');
+}
+
+function saveDenuncias(denuncias) {
+    localStorage.setItem('ddc_denuncias', JSON.stringify(denuncias));
+}
+
+function getUsuarios() {
+    return JSON.parse(localStorage.getItem('ddc_usuarios') || '[]');
+}
+
+function saveUsuarios(usuarios) {
+    localStorage.setItem('ddc_usuarios', JSON.stringify(usuarios));
+}
+
+function getReviews() {
+    return JSON.parse(localStorage.getItem('ddc_reviews') || '[]');
+}
+
+function saveReviews(reviews) {
+    localStorage.setItem('ddc_reviews', JSON.stringify(reviews));
+}
+
+function getSessao() {
+    return JSON.parse(localStorage.getItem('ddc_sessao') || 'null');
+}
+
+function saveSessao(sessao) {
+    if (sessao) {
+        localStorage.setItem('ddc_sessao', JSON.stringify(sessao));
+    } else {
+        localStorage.removeItem('ddc_sessao');
+    }
+}
+
+function seedReviewsIniciais() {
+    if (localStorage.getItem('ddc_seeded')) return;
+
+    const reviews = [
+        {
+            id: crypto.randomUUID(),
+            filmeId: 'duna-parte-dois',
+            userId: 'seed-ana',
+            userName: 'Ana Silva',
+            userAvatar: AVATAR_PADRAO,
+            nota: 9,
+            texto: 'Visual absolutamente impecável. A trilha sonora me arrepiou do começo ao fim. Um pouco lento no meio, mas compensa demais.',
+            likes: [],
+            respostas: [
+                {
+                    id: crypto.randomUUID(),
+                    parentId: null,
+                    userId: 'seed-carlos',
+                    userName: 'Carlos Mendes',
+                    userAvatar: AVATAR_PADRAO,
+                    texto: 'Concordo com a trilha. Achei o meio lento também, mas o último ato compensa tudo.',
+                    likes: ['seed-ana'],
+                    data: '2026-07-20T16:10:00.000Z'
+                }
+            ],
+            data: '2026-07-20T14:30:00.000Z'
+        },
+        {
+            id: crypto.randomUUID(),
+            filmeId: 'duna-parte-dois',
+            userId: 'seed-carlos',
+            userName: 'Carlos Mendes',
+            userAvatar: AVATAR_PADRAO,
+            nota: 8,
+            texto: 'Muito superior ao primeiro filme. Villeneuve domina o épico como poucos.',
+            likes: ['seed-ana'],
+            respostas: [],
+            data: '2026-07-22T09:15:00.000Z'
+        },
+        {
+            id: crypto.randomUUID(),
+            filmeId: 'oppenheimer',
+            userId: 'seed-lucas',
+            userName: 'Lucas Ferreira',
+            userAvatar: AVATAR_PADRAO,
+            nota: 10,
+            texto: 'Pesado, intenso e magistral. Cillian Murphy merece cada elogio.',
+            likes: ['seed-ana', 'seed-carlos'],
+            respostas: [],
+            data: '2026-07-18T20:00:00.000Z'
+        },
+        {
+            id: crypto.randomUUID(),
+            filmeId: 'the-batman',
+            userId: 'seed-marina',
+            userName: 'Marina Costa',
+            userAvatar: AVATAR_PADRAO,
+            nota: 9,
+            texto: 'O tom noir funciona perfeitamente. Pattinson é um Batman surpreendente.',
+            likes: ['seed-lucas'],
+            respostas: [],
+            data: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+            id: crypto.randomUUID(),
+            filmeId: 'interestelar',
+            userId: 'seed-ana',
+            userName: 'Ana Silva',
+            userAvatar: AVATAR_PADRAO,
+            nota: 10,
+            texto: 'Obra-prima absoluta. Cada cena é emocionante e a trilha do Hans Zimmer é inesquecível.',
+            likes: ['seed-carlos', 'seed-lucas'],
+            respostas: [],
+            data: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString()
+        },
+        {
+            id: crypto.randomUUID(),
+            filmeId: 'oppenheimer',
+            userId: 'seed-carlos',
+            userName: 'Carlos Mendes',
+            userAvatar: AVATAR_PADRAO,
+            nota: 9,
+            texto: 'Nolan no auge. A construção de tensão é magistral do início ao fim.',
+            likes: ['seed-ana'],
+            respostas: [],
+            data: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString()
+        }
+    ];
+
+    saveReviews(reviews);
+    localStorage.setItem('ddc_seeded', 'true');
+}
+
+function getUsuarioById(userId) {
+    const usuario = getUsuarios().find(u => u.id === userId);
+    if (usuario) return usuario;
+
+    const review = getReviews().find(r => r.userId === userId);
+    if (review) {
+        return {
+            id: userId,
+            nome: review.userName,
+            avatar: review.userAvatar || AVATAR_PADRAO,
+            favoritos: []
+        };
+    }
+
+    for (const r of getReviews()) {
+        const resposta = (r.respostas || []).find(resp => resp.userId === userId);
+        if (resposta) {
+            return {
+                id: userId,
+                nome: resposta.userName,
+                avatar: resposta.userAvatar || AVATAR_PADRAO,
+                favoritos: []
+            };
+        }
+    }
+    return null;
+}
+
+function buscarFilmes(termo) {
+    const query = termo.trim().toLowerCase();
+    if (!query) return [];
+
+    return filmes.filter(f =>
+        f.titulo.toLowerCase().includes(query) ||
+        f.genero.toLowerCase().includes(query) ||
+        String(f.ano).includes(query)
+    ).slice(0, 8);
+}
+
+function buscarUsuariosLista(termo) {
+    const query = termo.trim().toLowerCase();
+    if (!query) return [];
+
+    const usuariosMap = new Map();
+
+    getUsuarios().forEach(u => {
+        if (u.nome.toLowerCase().includes(query)) {
+            usuariosMap.set(u.id, { id: u.id, nome: u.nome, avatar: u.avatar || AVATAR_PADRAO });
+        }
+    });
+
+    getReviews().forEach(r => {
+        if (r.userName.toLowerCase().includes(query) && !usuariosMap.has(r.userId)) {
+            usuariosMap.set(r.userId, {
+                id: r.userId,
+                nome: r.userName,
+                avatar: r.userAvatar || AVATAR_PADRAO
+            });
+        }
+    });
+
+    return Array.from(usuariosMap.values()).slice(0, 8);
+}
+
+function renderResultadoFilme(f) {
+    const media = calcularMedia(f.id);
+    const notaDisplay = media ? `★ ${media}` : '★ —';
+    return `
+        <button type="button" class="search-result-item search-result-filme" onclick="fecharBusca(); fecharTelaBusca(); abrirFilme('${f.id}')">
+            <img src="${f.imagem}" alt="${escapeHtml(f.titulo)}" class="search-filme-thumb">
+            <div class="search-result-info">
+                <span class="search-result-title">${escapeHtml(f.titulo)}</span>
+                <span class="search-result-meta">${f.genero} · ${f.ano} · ${notaDisplay}</span>
+            </div>
+            <span class="search-result-type">Filme</span>
+        </button>
+    `;
+}
+
+function renderResultadoUsuario(u) {
+    return `
+        <button type="button" class="search-result-item search-result-usuario" onclick="fecharBusca(); fecharTelaBusca(); abrirPerfilPublico('${u.id}')">
+            <img src="${u.avatar}" alt="${escapeHtml(u.nome)}" class="search-user-avatar">
+            <div class="search-result-info">
+                <span class="search-result-title">${escapeHtml(u.nome)}</span>
+                <span class="search-result-meta">Membro da comunidade</span>
+            </div>
+            <span class="search-result-type">Usuário</span>
+        </button>
+    `;
+}
+
+function buscarGlobal(termo, origem = 'nav') {
+    ultimaBuscaTermo = termo;
+    const query = termo.trim().toLowerCase();
+
+    const filmesResult = (searchFilterAtual === 'usuarios') ? [] : buscarFilmes(termo);
+    const usuariosResult = (searchFilterAtual === 'filmes') ? [] : buscarUsuariosLista(termo);
+
+    if (origem === 'nav' || origem === 'both') {
+        const container = document.getElementById('search-results');
+        if (!query) {
+            container.innerHTML = '';
+            container.classList.remove('open');
+        } else if (filmesResult.length === 0 && usuariosResult.length === 0) {
+            container.innerHTML = '<p class="search-empty">Nenhum resultado encontrado.</p>';
+            container.classList.add('open');
+        } else {
+            let html = '';
+            if (filmesResult.length > 0) {
+                html += `<p class="search-group-label">Filmes</p>`;
+                html += filmesResult.slice(0, 4).map(renderResultadoFilme).join('');
+            }
+            if (usuariosResult.length > 0) {
+                html += `<p class="search-group-label">Usuários</p>`;
+                html += usuariosResult.slice(0, 4).map(renderResultadoUsuario).join('');
+            }
+            container.innerHTML = html;
+            container.classList.add('open');
+        }
+    }
+
+    if (origem === 'screen' || origem === 'both') {
+        renderSearchScreenResults(filmesResult, usuariosResult, query);
+    }
+}
+
+function renderSearchScreenResults(filmesResult, usuariosResult, query) {
+    const container = document.getElementById('search-screen-results');
+
+    if (!query) {
+        container.innerHTML = `
+            <div class="search-placeholder">
+                <span>✨</span>
+                <p>Comece a digitar para buscar filmes e usuários</p>
+            </div>
+        `;
+        return;
+    }
+
+    if (filmesResult.length === 0 && usuariosResult.length === 0) {
+        container.innerHTML = `
+            <div class="search-placeholder search-empty-state">
+                <span>🔍</span>
+                <p>Nenhum resultado para "<strong>${escapeHtml(query)}</strong>"</p>
+                <span class="search-empty-hint">Tente outro termo ou verifique a ortografia</span>
+            </div>
+        `;
+        return;
+    }
+
+    let html = '';
+
+    if (filmesResult.length > 0) {
+        html += `<div class="search-section"><h3 class="search-section-title">🎬 Filmes <span class="search-count">${filmesResult.length}</span></h3>`;
+        html += filmesResult.map(renderResultadoFilme).join('');
+        html += '</div>';
+    }
+
+    if (usuariosResult.length > 0) {
+        html += `<div class="search-section"><h3 class="search-section-title">👤 Usuários <span class="search-count">${usuariosResult.length}</span></h3>`;
+        html += usuariosResult.map(renderResultadoUsuario).join('');
+        html += '</div>';
+    }
+
+    container.innerHTML = html;
+}
+
+function abrirTelaBusca() {
+    const modal = document.getElementById('search-modal');
+    modal.style.display = 'flex';
+    const screenInput = document.getElementById('search-screen-input');
+    const navInput = document.getElementById('user-search-input');
+    screenInput.value = navInput.value;
+    setTimeout(() => screenInput.focus(), 100);
+    buscarGlobal(screenInput.value, 'screen');
+}
+
+function fecharTelaBusca() {
+    document.getElementById('search-modal').style.display = 'none';
+}
+
+function closeSearchOnBackdrop(e) {
+    if (e.target.id === 'search-modal') fecharTelaBusca();
+}
+
+function setSearchFilter(filtro, btn) {
+    searchFilterAtual = filtro;
+    document.querySelectorAll('.search-filter-tab').forEach(tab => tab.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    buscarGlobal(ultimaBuscaTermo, 'both');
+}
+
+function buscarUsuarios(termo) {
+    buscarGlobal(termo, 'nav');
+}
+
+function fecharBusca() {
+    const container = document.getElementById('search-results');
+    container.innerHTML = '';
+    container.classList.remove('open');
+}
+
+function getDestaqueSemana() {
+    const umaSemanaAtras = new Date();
+    umaSemanaAtras.setDate(umaSemanaAtras.getDate() - 7);
+
+    const reviewsRecentes = getReviews().filter(r => new Date(r.data) >= umaSemanaAtras);
+    const mediasPorFilme = {};
+
+    reviewsRecentes.forEach(r => {
+        if (!mediasPorFilme[r.filmeId]) {
+            mediasPorFilme[r.filmeId] = { soma: 0, count: 0 };
+        }
+        mediasPorFilme[r.filmeId].soma += r.nota;
+        mediasPorFilme[r.filmeId].count += 1;
+    });
+
+    let melhorId = null;
+    let melhorMedia = -1;
+    let melhorCount = 0;
+
+    Object.entries(mediasPorFilme).forEach(([filmeId, dados]) => {
+        const media = dados.soma / dados.count;
+        if (media > melhorMedia || (media === melhorMedia && dados.count > melhorCount)) {
+            melhorMedia = media;
+            melhorCount = dados.count;
+            melhorId = filmeId;
+        }
+    });
+
+    if (melhorId) {
+        return filmes.find(f => f.id === melhorId) || filmes[0];
+    }
+
+    let fallbackId = null;
+    let fallbackMedia = -1;
+    filmes.forEach(f => {
+        const media = calcularMedia(f.id);
+        if (media && parseFloat(media) > fallbackMedia) {
+            fallbackMedia = parseFloat(media);
+            fallbackId = f.id;
+        }
+    });
+
+    return filmes.find(f => f.id === fallbackId) || filmes[0];
+}
+
+function abrirFilmeDestaque() {
+    if (destaqueSemanaId) abrirFilme(destaqueSemanaId);
+}
+
+function getReviewDoUsuario(filmeId, userId) {
+    return getReviews().find(r => r.filmeId === filmeId && r.userId === userId) || null;
+}
+
+function usuarioJaAvaliou(filmeId, userId) {
+    return !!getReviewDoUsuario(filmeId, userId);
+}
+
+function getFavoritos(userId) {
+    const usuario = getUsuarioById(userId);
+    return usuario?.favoritos || [];
+}
+
+function isFavorito(filmeId, userId) {
+    return getFavoritos(userId).includes(filmeId);
+}
+
+function toggleFavorito() {
+    if (!sessaoAtual || !filmeAtual) return;
+
+    const usuarios = getUsuarios();
+    const usuario = usuarios.find(u => u.id === sessaoAtual.id);
+    if (!usuario) return;
+
+    if (!usuario.favoritos) usuario.favoritos = [];
+
+    const idx = usuario.favoritos.indexOf(filmeAtual.id);
+    if (idx >= 0) {
+        usuario.favoritos.splice(idx, 1);
+        showToast('Removido dos favoritos.');
+    } else {
+        usuario.favoritos.push(filmeAtual.id);
+        showToast('Adicionado aos favoritos!');
+    }
+
+    saveUsuarios(usuarios);
+    atualizarBotaoFavorito();
+    if (document.getElementById('profile-modal').style.display === 'flex') {
+        renderProfileContent();
+    }
+}
+
+function atualizarBotaoFavorito() {
+    const btn = document.getElementById('btn-favorite');
+    const icon = document.getElementById('favorite-icon');
+    const label = document.getElementById('favorite-label');
+
+    if (!sessaoAtual || !filmeAtual) {
+        btn.style.display = 'none';
+        return;
+    }
+
+    btn.style.display = 'inline-flex';
+    const favoritado = isFavorito(filmeAtual.id, sessaoAtual.id);
+    icon.textContent = favoritado ? '❤️' : '🤍';
+    label.textContent = favoritado ? 'Favoritado' : 'Favoritar';
+    btn.classList.toggle('favorited', favoritado);
+}
+
+function atualizarFormularioReview() {
+    const reviewForm = document.getElementById('review-form-section');
+    if (!reviewForm || !filmeAtual) return;
+
+    if (!sessaoAtual) {
+        reviewForm.style.display = 'none';
+        return;
+    }
+
+    const reviewExistente = getReviewDoUsuario(filmeAtual.id, sessaoAtual.id);
+    if (reviewExistente) {
+        reviewForm.innerHTML = `
+            <div class="review-already">
+                <div class="review-already-header">
+                    <h3>Sua avaliação</h3>
+                    <span class="review-nota">★ ${reviewExistente.nota}</span>
+                </div>
+                <p class="review-text">${escapeHtml(reviewExistente.texto)}</p>
+                <p class="review-already-note">Você já avaliou este filme. Cada usuário pode fazer apenas uma avaliação por título.</p>
+            </div>
+        `;
+        reviewForm.style.display = 'block';
+    } else {
+        reviewForm.style.display = 'block';
+        reviewForm.innerHTML = `
+            <h3>Sua avaliação</h3>
+            <div class="form-group">
+                <label>Nota</label>
+                <div class="star-rating" id="star-rating">
+                    <button type="button" class="star-btn" data-value="1">★</button>
+                    <button type="button" class="star-btn" data-value="2">★</button>
+                    <button type="button" class="star-btn" data-value="3">★</button>
+                    <button type="button" class="star-btn" data-value="4">★</button>
+                    <button type="button" class="star-btn" data-value="5">★</button>
+                    <button type="button" class="star-btn" data-value="6">★</button>
+                    <button type="button" class="star-btn" data-value="7">★</button>
+                    <button type="button" class="star-btn" data-value="8">★</button>
+                    <button type="button" class="star-btn" data-value="9">★</button>
+                    <button type="button" class="star-btn" data-value="10">★</button>
+                </div>
+                <span class="nota-label" id="nota-selecionada">Selecione uma nota</span>
+            </div>
+            <div class="form-group">
+                <label for="review-texto">Comentário</label>
+                <textarea id="review-texto" rows="4" placeholder="Conte o que achou do filme..."></textarea>
+            </div>
+            <p class="form-error" id="review-error"></p>
+            <button class="btn-main" onclick="enviarReview()">Publicar avaliação</button>
+        `;
+        initStarRating();
+        resetReviewForm();
+    }
+}
+
+function formatarData(iso) {
+    return new Date(iso).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+}
+
+function calcularMedia(filmeId) {
+    const reviews = getReviews().filter(r => r.filmeId === filmeId);
+    if (reviews.length === 0) return null;
+    const soma = reviews.reduce((acc, r) => acc + r.nota, 0);
+    return (soma / reviews.length).toFixed(1);
+}
+
+function contarReviews(filmeId) {
+    return getReviews().filter(r => r.filmeId === filmeId).length;
+}
+
+function showToast(mensagem, tipo = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = mensagem;
+    toast.className = `toast toast-${tipo} show`;
+    setTimeout(() => toast.classList.remove('show'), 3200);
+}
+
+function scrollToTop(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function scrollToSection(e, id) {
+    e.preventDefault();
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+function atualizarUIAuth() {
+    const navLinks = document.getElementById('nav-links');
+    const navUser = document.getElementById('nav-user');
+    const guestNotice = document.getElementById('guest-notice');
+
+    if (sessaoAtual) {
+        navLinks.style.display = 'none';
+        navUser.style.display = 'flex';
+        document.getElementById('nav-user-name').textContent = sessaoAtual.nome;
+        document.getElementById('profile-img').src = sessaoAtual.avatar || AVATAR_PADRAO;
+        if (guestNotice) guestNotice.style.display = 'none';
+    } else {
+        navLinks.style.display = 'flex';
+        navUser.style.display = 'none';
+        if (guestNotice) guestNotice.style.display = 'flex';
+    }
+
+    if (filmeAtual) {
+        atualizarFormularioReview();
+        atualizarBotaoFavorito();
+    }
+}
+
+function renderFilmes() {
+    const grid = document.getElementById('movie-grid');
+    grid.innerHTML = filmes.map(filme => {
+        const media = calcularMedia(filme.id);
+        const total = contarReviews(filme.id);
+        const notaDisplay = media ? `★ ${media}` : '★ —';
+
+        return `
+            <article class="card" onclick="abrirFilme('${filme.id}')">
+                <img src="${filme.imagem}" alt="${filme.titulo}" class="card-img" loading="lazy">
+                <div class="card-content">
+                    <div class="card-header">
+                        <span class="rating">${notaDisplay}</span>
+                        <span class="meta">${filme.genero} / ${filme.ano}</span>
+                    </div>
+                    <h3 class="card-title">${filme.titulo}</h3>
+                    <p class="card-text">${filme.descricao}</p>
+                    <span class="card-reviews">${total} ${total === 1 ? 'avaliação' : 'avaliações'}</span>
+                </div>
+            </article>
+        `;
+    }).join('');
+
+    atualizarHero();
+}
+
+function atualizarHero() {
+    const destaque = getDestaqueSemana();
+    destaqueSemanaId = destaque.id;
+    const media = calcularMedia(destaque.id);
+    const total = contarReviews(destaque.id);
+    const hero = document.querySelector('.hero');
+
+    document.getElementById('hero-title').textContent = destaque.titulo;
+    document.getElementById('hero-description').textContent = destaque.descricao;
+    document.getElementById('hero-rating').textContent = media ? `★ ${media}` : '★ —';
+    document.getElementById('hero-reviews-count').textContent =
+        `${total} ${total === 1 ? 'avaliação' : 'avaliações'}`;
+
+    if (hero) {
+        hero.style.background = `
+            linear-gradient(to top, var(--bg-dark) 10%, transparent 70%),
+            linear-gradient(to right, rgba(15, 23, 42, 0.85), transparent 60%),
+            url('${destaque.imagem}')`;
+        hero.style.backgroundSize = 'cover';
+        hero.style.backgroundPosition = 'center';
+    }
+}
+
+function openAuth() {
+    fecharTodosModais();
+    showLogin();
+    document.getElementById('auth-modal').style.display = 'flex';
+    document.getElementById('login-error').textContent = '';
+    document.getElementById('register-error').textContent = '';
+    document.getElementById('forgot-error').textContent = '';
+}
+
+function closeAuth() {
+    document.getElementById('auth-modal').style.display = 'none';
+}
+
+function closeAuthOnBackdrop(e) {
+    if (e.target.id === 'auth-modal') closeAuth();
+}
+
+function showRegister() {
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('register-form').style.display = 'block';
+    document.getElementById('forgot-form').style.display = 'none';
+    document.getElementById('login-error').textContent = '';
+}
+
+function showLogin() {
+    document.getElementById('register-form').style.display = 'none';
+    document.getElementById('forgot-form').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('register-error').textContent = '';
+    document.getElementById('forgot-error').textContent = '';
+}
+
+function showForgotPassword() {
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('register-form').style.display = 'none';
+    document.getElementById('forgot-form').style.display = 'block';
+    document.getElementById('login-error').textContent = '';
+    document.getElementById('forgot-error').textContent = '';
+}
+
+function recuperarSenha() {
+    const email = document.getElementById('forgot-email').value.trim().toLowerCase();
+    const senha = document.getElementById('forgot-password').value;
+    const confirmar = document.getElementById('forgot-password-confirm').value;
+    const erroEl = document.getElementById('forgot-error');
+
+    if (!email || !senha || !confirmar) {
+        erroEl.textContent = 'Preencha todos os campos.';
+        return;
+    }
+    if (!email.includes('@')) {
+        erroEl.textContent = 'Informe um email válido.';
+        return;
+    }
+    if (senha.length < 6) {
+        erroEl.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+        return;
+    }
+    if (senha !== confirmar) {
+        erroEl.textContent = 'As senhas não coincidem.';
+        return;
+    }
+
+    const usuarios = getUsuarios();
+    const usuario = usuarios.find(u => u.email === email);
+    if (!usuario) {
+        erroEl.textContent = 'Nenhuma conta encontrada com este email.';
+        return;
+    }
+
+    usuario.senha = senha;
+    saveUsuarios(usuarios);
+
+    document.getElementById('forgot-email').value = '';
+    document.getElementById('forgot-password').value = '';
+    document.getElementById('forgot-password-confirm').value = '';
+    erroEl.textContent = '';
+
+    showToast('Senha redefinida com sucesso! Faça login.');
+    showLogin();
+}
+
+function fazerCadastro() {
+    const nome = document.getElementById('register-name').value.trim();
+    const email = document.getElementById('register-email').value.trim().toLowerCase();
+    const senha = document.getElementById('register-password').value;
+    const erroEl = document.getElementById('register-error');
+
+    if (!nome || !email || !senha) {
+        erroEl.textContent = 'Preencha todos os campos.';
+        return;
+    }
+    if (senha.length < 6) {
+        erroEl.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+        return;
+    }
+    if (!email.includes('@')) {
+        erroEl.textContent = 'Informe um email válido.';
+        return;
+    }
+
+    const usuarios = getUsuarios();
+    if (usuarios.some(u => u.email === email)) {
+        erroEl.textContent = 'Este email já está cadastrado.';
+        return;
+    }
+
+    const novoUsuario = {
+        id: crypto.randomUUID(),
+        nome,
+        email,
+        senha,
+        avatar: AVATAR_PADRAO,
+        favoritos: []
+    };
+
+    usuarios.push(novoUsuario);
+    saveUsuarios(usuarios);
+
+    sessaoAtual = { id: novoUsuario.id, nome: novoUsuario.nome, avatar: novoUsuario.avatar };
+    saveSessao(sessaoAtual);
+
+    document.getElementById('register-name').value = '';
+    document.getElementById('register-email').value = '';
+    document.getElementById('register-password').value = '';
+
+    atualizarUIAuth();
+    closeAuth();
+    showToast(`Bem-vindo, ${nome}! Conta criada com sucesso.`);
+    renderFilmes();
+    if (filmeAtual) abrirFilme(filmeAtual.id, true);
+}
+
+function fazerLogin() {
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const senha = document.getElementById('login-password').value;
+    const erroEl = document.getElementById('login-error');
+
+    if (!email || !senha) {
+        erroEl.textContent = 'Preencha email e senha.';
+        return;
+    }
+
+    const usuario = getUsuarios().find(u => u.email === email && u.senha === senha);
+    if (!usuario) {
+        erroEl.textContent = 'Email ou senha incorretos.';
+        return;
+    }
+
+    sessaoAtual = { id: usuario.id, nome: usuario.nome, avatar: usuario.avatar };
+    saveSessao(sessaoAtual);
+
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-password').value = '';
+
+    atualizarUIAuth();
+    closeAuth();
+    showToast(`Olá, ${usuario.nome}!`);
+    if (filmeAtual) abrirFilme(filmeAtual.id, true);
+}
+
+function logout() {
+    sessaoAtual = null;
+    saveSessao(null);
+    atualizarUIAuth();
+    showToast('Você saiu da sua conta.');
+    if (document.getElementById('filme-modal').style.display === 'flex' && filmeAtual) {
+        abrirFilme(filmeAtual.id, true);
+    }
+}
+
+function abrirFilme(filmeId, manterModal = false) {
+    const filme = filmes.find(f => f.id === filmeId);
+    if (!filme) return;
+
+    if (!manterModal) {
+        fecharTodosModais();
+    }
+
+    filmeAtual = filme;
+    reviewsAtuais = getReviews().filter(r => r.filmeId === filmeId);
+
+    document.getElementById('filme-titulo').textContent = filme.titulo;
+    document.getElementById('filme-meta').textContent = `${filme.genero} · ${filme.ano}`;
+
+    const media = calcularMedia(filmeId);
+    const total = contarReviews(filmeId);
+    document.getElementById('filme-nota-media').textContent = media ? `★ ${media}` : '★ —';
+    document.getElementById('filme-total-reviews').textContent =
+        `${total} ${total === 1 ? 'avaliação' : 'avaliações'}`;
+
+    resetReviewForm();
+    atualizarUIAuth();
+    atualizarFormularioReview();
+    atualizarBotaoFavorito();
+    ordenarReviews('populares', document.querySelector('.filter-tab[data-filter="populares"]'));
+
+    if (!manterModal) {
+        document.getElementById('filme-modal').style.display = 'flex';
+    }
+}
+
+function fecharFilme() {
+    document.getElementById('filme-modal').style.display = 'none';
+    filmeAtual = null;
+}
+
+function fecharFilmeOnBackdrop(e) {
+    if (e.target.id === 'filme-modal') fecharFilme();
+}
+
+function resetReviewForm() {
+    notaSelecionada = 0;
+    const textoEl = document.getElementById('review-texto');
+    const erroEl = document.getElementById('review-error');
+    const notaEl = document.getElementById('nota-selecionada');
+    if (!textoEl) return;
+    textoEl.value = '';
+    if (erroEl) erroEl.textContent = '';
+    if (notaEl) notaEl.textContent = 'Selecione uma nota';
+    document.querySelectorAll('.star-btn').forEach(btn => btn.classList.remove('active'));
+}
+
+function initStarRating() {
+    document.querySelectorAll('.star-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            notaSelecionada = parseInt(btn.dataset.value, 10);
+            document.getElementById('nota-selecionada').textContent = `Nota: ${notaSelecionada}/10`;
+            document.querySelectorAll('.star-btn').forEach(star => {
+                star.classList.toggle('active', parseInt(star.dataset.value, 10) <= notaSelecionada);
+            });
+        });
+    });
+}
+
+function enviarReview() {
+    if (!sessaoAtual) {
+        openAuth();
+        return;
+    }
+
+    if (usuarioJaAvaliou(filmeAtual.id, sessaoAtual.id)) {
+        showToast('Você já avaliou este filme.', 'error');
+        return;
+    }
+
+    const texto = document.getElementById('review-texto')?.value.trim();
+    const erroEl = document.getElementById('review-error');
+
+    if (notaSelecionada === 0) {
+        if (erroEl) erroEl.textContent = 'Selecione uma nota de 1 a 10.';
+        return;
+    }
+    if (!texto || texto.length < 10) {
+        if (erroEl) erroEl.textContent = 'Escreva um comentário com pelo menos 10 caracteres.';
+        return;
+    }
+
+    const reviews = getReviews();
+    const novaReview = {
+        id: crypto.randomUUID(),
+        filmeId: filmeAtual.id,
+        userId: sessaoAtual.id,
+        userName: sessaoAtual.nome,
+        userAvatar: sessaoAtual.avatar || AVATAR_PADRAO,
+        nota: notaSelecionada,
+        texto,
+        likes: [],
+        respostas: [],
+        data: new Date().toISOString()
+    };
+
+    reviews.push(novaReview);
+    saveReviews(reviews);
+
+    showToast('Avaliação publicada!');
+    abrirFilme(filmeAtual.id, true);
+    renderFilmes();
+    if (document.getElementById('profile-modal').style.display === 'flex') {
+        renderProfileContent();
+    }
+}
+
+function renderReviews() {
+    const container = document.getElementById('lista-reviews');
+
+    if (reviewsAtuais.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <span>🎬</span>
+                <p>Nenhuma avaliação ainda. Seja o primeiro a opinar!</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = reviewsAtuais.map(review => {
+        const curtiu = sessaoAtual && review.likes.includes(sessaoAtual.id);
+        const likeClass = curtiu ? 'review-like liked' : 'review-like';
+        const likeAction = sessaoAtual
+            ? `onclick="toggleLike('${review.id}')"`
+            : `onclick="pedirLoginParaCurtir()"`;
+        const jaDenunciou = sessaoAtual && getDenuncias().some(d =>
+            d.reviewId === review.id && d.userId === sessaoAtual.id
+        );
+        const reportBtn = sessaoAtual && review.userId !== sessaoAtual.id
+            ? `<button class="review-report${jaDenunciou ? ' reported' : ''}" onclick="abrirReportModal('${review.id}')" ${jaDenunciou ? 'disabled' : ''} aria-label="Reportar avaliação">
+                    <svg class="report-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    <span>${jaDenunciou ? 'Denunciado' : 'Reportar'}</span>
+               </button>`
+            : '';
+        const totalRespostas = (review.respostas || []).length;
+        const formAberto = formularioRespostaAberto === review.id;
+
+        return `
+            <article class="review-card" id="review-${review.id}">
+                <div class="review-header">
+                    <img src="${review.userAvatar || AVATAR_PADRAO}" alt="${review.userName}" class="review-avatar review-avatar-clickable" onclick="abrirPerfilPublico('${review.userId}')" title="Ver perfil">
+                    <div class="review-user-info">
+                        <strong class="review-user-link" onclick="abrirPerfilPublico('${review.userId}')" title="Ver perfil">${escapeHtml(review.userName)}</strong>
+                        <span class="meta">${formatarData(review.data)}</span>
+                    </div>
+                    <span class="review-nota">★ ${review.nota}</span>
+                </div>
+                <p class="review-text">${escapeHtml(review.texto)}</p>
+                <div class="review-actions">
+                    <button class="${likeClass}" ${likeAction} aria-label="Curtir">
+                        <span class="like-icon">${curtiu ? '❤️' : '🤍'}</span>
+                        ${review.likes.length} gostei
+                    </button>
+                    <button class="review-reply" onclick="toggleReplyForm('${review.id}')" aria-label="Responder avaliação">
+                        <svg class="reply-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <span>${totalRespostas > 0 ? `${totalRespostas} ${totalRespostas === 1 ? 'resposta' : 'respostas'}` : 'Responder'}</span>
+                    </button>
+                    ${reportBtn}
+                </div>
+                <div class="review-discussion">
+                    ${renderFormularioResposta(review.id, null, formAberto)}
+                    ${renderRespostas(review)}
+                </div>
+            </article>
+        `;
+    }).join('');
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function idFormularioResposta(reviewId, parentId) {
+    return parentId ? `reply-form-${reviewId}-${parentId}` : `reply-form-${reviewId}`;
+}
+
+function renderFormularioResposta(reviewId, parentId, aberto) {
+    const formId = idFormularioResposta(reviewId, parentId);
+    const placeholder = parentId ? 'Continue a discussão...' : 'Escreva uma resposta para esta avaliação...';
+    return `
+        <div class="reply-form${aberto ? ' open' : ''}" id="${formId}">
+            <textarea rows="2" placeholder="${placeholder}" onkeydown="handleReplyKey(event, '${reviewId}', ${parentId ? `'${parentId}'` : 'null'})"></textarea>
+            <div class="reply-form-actions">
+                <button type="button" class="reply-cancel" onclick="fecharFormularioResposta()">Cancelar</button>
+                <button type="button" class="reply-submit" onclick="enviarResposta('${reviewId}', ${parentId ? `'${parentId}'` : 'null'})">Publicar</button>
+            </div>
+        </div>
+    `;
+}
+
+function renderRespostaItem(review, resposta, todas, isNested) {
+    const likes = resposta.likes || [];
+    const curtiu = sessaoAtual && likes.includes(sessaoAtual.id);
+    const likeClass = curtiu ? 'review-like liked' : 'review-like';
+    const likeAction = sessaoAtual
+        ? `onclick="toggleLikeResposta('${review.id}', '${resposta.id}')"`
+        : `onclick="pedirLoginParaCurtir()"`;
+    const formAberto = formularioRespostaAberto === `${review.id}:${resposta.id}`;
+    const filhos = isNested ? [] : todas.filter(r => r.parentId === resposta.id);
+
+    return `
+        <article class="reply-card${isNested ? ' reply-nested' : ''}" id="reply-${resposta.id}">
+            <div class="reply-header">
+                <img src="${resposta.userAvatar || AVATAR_PADRAO}" alt="${escapeHtml(resposta.userName)}" class="reply-avatar" onclick="abrirPerfilPublico('${resposta.userId}')" title="Ver perfil">
+                <div class="reply-user-info">
+                    <strong onclick="abrirPerfilPublico('${resposta.userId}')">${escapeHtml(resposta.userName)}</strong>
+                    <span class="meta">${formatarData(resposta.data)}</span>
+                </div>
+            </div>
+            <p class="reply-text">${escapeHtml(resposta.texto)}</p>
+            <div class="reply-actions">
+                <button class="${likeClass}" ${likeAction} aria-label="Curtir resposta">
+                    <span class="like-icon">${curtiu ? '❤️' : '🤍'}</span>
+                    ${likes.length}
+                </button>
+                <button class="review-reply" onclick="toggleReplyForm('${review.id}', '${resposta.id}')">
+                    Responder
+                </button>
+            </div>
+            ${renderFormularioResposta(review.id, resposta.id, formAberto)}
+            ${filhos.length ? `<div class="replies-list">${filhos.map(filho => renderRespostaItem(review, filho, todas, true)).join('')}</div>` : ''}
+        </article>
+    `;
+}
+
+function renderRespostas(review) {
+    const respostas = review.respostas || [];
+    if (respostas.length === 0) return '';
+
+    const topLevel = respostas.filter(r => !r.parentId);
+    return `<div class="replies-list">${topLevel.map(r => renderRespostaItem(review, r, respostas, false)).join('')}</div>`;
+}
+
+function toggleReplyForm(reviewId, parentId = null) {
+    if (!sessaoAtual) {
+        showToast('Faça login para participar da discussão.', 'info');
+        openAuth();
+        return;
+    }
+
+    const chave = parentId ? `${reviewId}:${parentId}` : reviewId;
+    formularioRespostaAberto = formularioRespostaAberto === chave ? null : chave;
+    renderReviews();
+
+    if (formularioRespostaAberto) {
+        const form = document.getElementById(idFormularioResposta(reviewId, parentId));
+        const textarea = form?.querySelector('textarea');
+        textarea?.focus();
+    }
+}
+
+function fecharFormularioResposta() {
+    formularioRespostaAberto = null;
+    renderReviews();
+}
+
+function handleReplyKey(event, reviewId, parentId) {
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        enviarResposta(reviewId, parentId);
+    }
+}
+
+function enviarResposta(reviewId, parentId = null) {
+    if (!sessaoAtual) {
+        showToast('Faça login para participar da discussão.', 'info');
+        openAuth();
+        return;
+    }
+
+    const form = document.getElementById(idFormularioResposta(reviewId, parentId));
+    const textarea = form?.querySelector('textarea');
+    const texto = textarea?.value.trim() || '';
+
+    if (texto.length < 3) {
+        showToast('Escreva uma resposta com pelo menos 3 caracteres.', 'error');
+        return;
+    }
+
+    const reviews = getReviews();
+    const review = reviews.find(r => r.id === reviewId);
+    if (!review) return;
+
+    if (!Array.isArray(review.respostas)) review.respostas = [];
+
+    let parentFinal = parentId || null;
+    if (parentFinal) {
+        const pai = review.respostas.find(r => r.id === parentFinal);
+        if (pai?.parentId) parentFinal = pai.parentId;
+    }
+
+    review.respostas.push({
+        id: crypto.randomUUID(),
+        parentId: parentFinal,
+        userId: sessaoAtual.id,
+        userName: sessaoAtual.nome,
+        userAvatar: sessaoAtual.avatar || AVATAR_PADRAO,
+        texto,
+        likes: [],
+        data: new Date().toISOString()
+    });
+
+    saveReviews(reviews);
+    formularioRespostaAberto = null;
+    showToast('Resposta publicada!');
+
+    if (filmeAtual) abrirFilme(filmeAtual.id, true);
+}
+
+function toggleLikeResposta(reviewId, respostaId) {
+    if (!sessaoAtual) {
+        pedirLoginParaCurtir();
+        return;
+    }
+
+    const reviews = getReviews();
+    const review = reviews.find(r => r.id === reviewId);
+    const resposta = review?.respostas?.find(r => r.id === respostaId);
+    if (!resposta) return;
+    if (!Array.isArray(resposta.likes)) resposta.likes = [];
+
+    const idx = resposta.likes.indexOf(sessaoAtual.id);
+    if (idx >= 0) {
+        resposta.likes.splice(idx, 1);
+    } else {
+        resposta.likes.push(sessaoAtual.id);
+    }
+
+    saveReviews(reviews);
+    if (filmeAtual) abrirFilme(filmeAtual.id, true);
+}
+
+function toggleLike(reviewId) {
+    if (!sessaoAtual) {
+        pedirLoginParaCurtir();
+        return;
+    }
+
+    const reviews = getReviews();
+    const review = reviews.find(r => r.id === reviewId);
+    if (!review) return;
+
+    const idx = review.likes.indexOf(sessaoAtual.id);
+    if (idx >= 0) {
+        review.likes.splice(idx, 1);
+    } else {
+        review.likes.push(sessaoAtual.id);
+    }
+
+    saveReviews(reviews);
+    abrirFilme(filmeAtual.id, true);
+}
+
+function pedirLoginParaCurtir() {
+    showToast('Faça login para curtir avaliações.', 'info');
+    openAuth();
+}
+
+function ordenarReviews(tipo, btn) {
+    document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    if (tipo === 'populares') {
+        reviewsAtuais.sort((a, b) => b.likes.length - a.likes.length);
+    } else if (tipo === 'recentes') {
+        reviewsAtuais.sort((a, b) => new Date(b.data) - new Date(a.data));
+    } else if (tipo === 'antigas') {
+        reviewsAtuais.sort((a, b) => new Date(a.data) - new Date(b.data));
+    }
+
+    renderReviews();
+}
+
+function openProfile() {
+    if (!sessaoAtual) return;
+
+    fecharTodosModais();
+
+    const usuario = getUsuarioById(sessaoAtual.id);
+    if (!usuario) return;
+
+    document.getElementById('profile-display-name').textContent = sessaoAtual.nome;
+    document.getElementById('profile-email').textContent = usuario.email || '';
+    document.getElementById('profile-name').value = sessaoAtual.nome;
+    document.getElementById('profile-email-input').value = usuario.email || '';
+    document.getElementById('profile-preview-img').src = sessaoAtual.avatar || AVATAR_PADRAO;
+    document.getElementById('profile-senha-atual').value = '';
+    document.getElementById('profile-senha-nova').value = '';
+    document.getElementById('profile-settings-error').textContent = '';
+
+    document.querySelectorAll('.profile-tab-own').forEach(tab => tab.style.display = '');
+
+    switchProfileTab('avaliados', document.querySelector('#profile-tabs-nav .profile-tab[data-tab="avaliados"]'));
+    renderProfileContent();
+    document.getElementById('profile-modal').style.display = 'flex';
+}
+
+function abrirPerfilPublico(userId) {
+    if (sessaoAtual && sessaoAtual.id === userId) {
+        openProfile();
+        return;
+    }
+
+    const usuario = getUsuarioById(userId);
+    if (!usuario) {
+        showToast('Usuário não encontrado.', 'error');
+        return;
+    }
+
+    fecharTodosModais();
+    fecharBusca();
+    fecharTelaBusca();
+    document.getElementById('user-search-input').value = '';
+    const screenInput = document.getElementById('search-screen-input');
+    if (screenInput) screenInput.value = '';
+
+    perfilPublicoAtual = usuario;
+
+    const reviews = getReviews().filter(r => r.userId === userId);
+    const favoritos = usuario.favoritos || [];
+
+    document.getElementById('public-profile-avatar').src = usuario.avatar || AVATAR_PADRAO;
+    document.getElementById('public-profile-name').textContent = usuario.nome;
+    document.getElementById('public-profile-since').textContent =
+        `${reviews.length} ${reviews.length === 1 ? 'avaliação publicada' : 'avaliações publicadas'}`;
+
+    document.getElementById('public-stat-reviews').textContent = reviews.length;
+    document.getElementById('public-stat-favorites').textContent = favoritos.length;
+
+    if (reviews.length > 0) {
+        const media = (reviews.reduce((acc, r) => acc + r.nota, 0) / reviews.length).toFixed(1);
+        document.getElementById('public-stat-avg').textContent = media;
+    } else {
+        document.getElementById('public-stat-avg').textContent = '—';
+    }
+
+    renderProfileMovieList('public-rated-list', reviews.map(r => {
+        const filme = filmes.find(f => f.id === r.filmeId);
+        return filme ? { filme, nota: r.nota, data: r.data } : null;
+    }).filter(Boolean), 'avaliados');
+
+    renderProfileMovieList('public-favorites-list', favoritos.map(id => {
+        const filme = filmes.find(f => f.id === id);
+        const review = reviews.find(r => r.filmeId === id);
+        return filme ? { filme, nota: review?.nota, data: review?.data } : null;
+    }).filter(Boolean), 'favoritos');
+
+    switchPublicProfileTab('public-avaliados', document.querySelector('#public-profile-modal .profile-tab[data-tab="public-avaliados"]'));
+    document.getElementById('public-profile-modal').style.display = 'flex';
+}
+
+function switchPublicProfileTab(tabId, btn) {
+    document.querySelectorAll('#public-profile-modal .profile-tab').forEach(tab => tab.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    document.getElementById('tab-public-avaliados').style.display = tabId === 'public-avaliados' ? 'block' : 'none';
+    document.getElementById('tab-public-favoritos').style.display = tabId === 'public-favoritos' ? 'block' : 'none';
+}
+
+function closePublicProfile() {
+    document.getElementById('public-profile-modal').style.display = 'none';
+    perfilPublicoAtual = null;
+}
+
+function closePublicProfileOnBackdrop(e) {
+    if (e.target.id === 'public-profile-modal') closePublicProfile();
+}
+
+function abrirReportModal(reviewId) {
+    if (!sessaoAtual) {
+        pedirLoginParaCurtir();
+        return;
+    }
+
+    const review = getReviews().find(r => r.id === reviewId);
+    if (!review) return;
+
+    if (review.userId === sessaoAtual.id) {
+        showToast('Você não pode denunciar sua própria avaliação.', 'error');
+        return;
+    }
+
+    const jaDenunciou = getDenuncias().some(d => d.reviewId === reviewId && d.userId === sessaoAtual.id);
+    if (jaDenunciou) {
+        showToast('Você já denunciou esta avaliação.', 'info');
+        return;
+    }
+
+    reviewParaDenunciar = reviewId;
+    document.getElementById('report-motivo').value = 'spam';
+    document.getElementById('report-detalhes').value = '';
+    document.getElementById('report-error').textContent = '';
+
+    document.querySelectorAll('.report-motivo-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === 'spam');
+    });
+
+    const filme = filmes.find(f => f.id === review.filmeId);
+    document.getElementById('report-preview').innerHTML = `
+        <div class="report-preview-header">
+            <img src="${review.userAvatar || AVATAR_PADRAO}" alt="${escapeHtml(review.userName)}" class="report-preview-avatar">
+            <div>
+                <strong>${escapeHtml(review.userName)}</strong>
+                <span class="meta">${filme ? escapeHtml(filme.titulo) : 'Filme'} · ★ ${review.nota}</span>
+            </div>
+        </div>
+        <p class="report-preview-text">"${escapeHtml(review.texto.length > 120 ? review.texto.slice(0, 120) + '...' : review.texto)}"</p>
+    `;
+
+    const reportModal = document.getElementById('report-modal');
+    reportModal.style.display = 'flex';
+}
+
+function selectReportMotivo(btn) {
+    document.querySelectorAll('.report-motivo-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('report-motivo').value = btn.dataset.value;
+}
+
+function closeReportModal() {
+    document.getElementById('report-modal').style.display = 'none';
+    reviewParaDenunciar = null;
+}
+
+function closeReportOnBackdrop(e) {
+    if (e.target.id === 'report-modal') closeReportModal();
+}
+
+function enviarDenuncia() {
+    if (!sessaoAtual || !reviewParaDenunciar) return;
+
+    const motivo = document.getElementById('report-motivo').value;
+    const detalhes = document.getElementById('report-detalhes').value.trim();
+    const erroEl = document.getElementById('report-error');
+    const review = getReviews().find(r => r.id === reviewParaDenunciar);
+
+    if (!review) {
+        erroEl.textContent = 'Avaliação não encontrada.';
+        return;
+    }
+
+    const denuncias = getDenuncias();
+    if (denuncias.some(d => d.reviewId === reviewParaDenunciar && d.userId === sessaoAtual.id)) {
+        erroEl.textContent = 'Você já denunciou esta avaliação.';
+        return;
+    }
+
+    const filme = filmes.find(f => f.id === review.filmeId);
+
+    denuncias.push({
+        id: crypto.randomUUID(),
+        reviewId: reviewParaDenunciar,
+        userId: sessaoAtual.id,
+        userName: sessaoAtual.nome,
+        reviewUserName: review.userName,
+        filmeTitulo: filme?.titulo || 'Filme',
+        motivo,
+        detalhes,
+        data: new Date().toISOString()
+    });
+
+    saveDenuncias(denuncias);
+    closeReportModal();
+    showToast('Denúncia enviada. Obrigado por ajudar a comunidade!');
+
+    if (filmeAtual) abrirFilme(filmeAtual.id, true);
+    if (document.getElementById('profile-modal').style.display === 'flex') {
+        renderDenunciasTab();
+    }
+}
+
+function renderDenunciasTab() {
+    if (!sessaoAtual) return;
+
+    const container = document.getElementById('profile-denuncias-list');
+    const denuncias = getDenuncias()
+        .filter(d => d.userId === sessaoAtual.id)
+        .sort((a, b) => new Date(b.data) - new Date(a.data));
+
+    const motivosLabel = {
+        spam: 'Spam ou propaganda',
+        ofensivo: 'Conteúdo ofensivo',
+        falso: 'Avaliação falsa',
+        spoiler: 'Spoiler sem aviso',
+        outro: 'Outro'
+    };
+
+    if (denuncias.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state profile-empty">
+                <span>🛡️</span>
+                <p>Nenhuma denúncia enviada. Use o botão "Reportar" nas avaliações suspeitas.</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = denuncias.map(d => `
+        <article class="denuncia-card">
+            <div class="denuncia-header">
+                <strong>${escapeHtml(d.filmeTitulo)}</strong>
+                <span class="meta">${formatarData(d.data)}</span>
+            </div>
+            <p class="denuncia-meta">Avaliação de <strong>${escapeHtml(d.reviewUserName)}</strong></p>
+            <span class="denuncia-motivo">${motivosLabel[d.motivo] || d.motivo}</span>
+            ${d.detalhes ? `<p class="denuncia-detalhes">${escapeHtml(d.detalhes)}</p>` : ''}
+        </article>
+    `).join('');
+}
+
+function switchProfileTab(tabId, btn) {
+    document.querySelectorAll('#profile-tabs-nav .profile-tab').forEach(tab => tab.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    document.querySelectorAll('#profile-modal .profile-tab-content').forEach(content => {
+        content.style.display = 'none';
+    });
+    document.getElementById(`tab-${tabId}`).style.display = 'block';
+
+    if (tabId === 'denuncias') renderDenunciasTab();
+}
+
+function renderProfileContent() {
+    if (!sessaoAtual) return;
+
+    const usuario = getUsuarioById(sessaoAtual.id);
+    const reviews = getReviews().filter(r => r.userId === sessaoAtual.id);
+    const favoritos = usuario?.favoritos || [];
+
+    document.getElementById('profile-stat-reviews').textContent = reviews.length;
+    document.getElementById('profile-stat-favorites').textContent = favoritos.length;
+
+    if (reviews.length > 0) {
+        const media = (reviews.reduce((acc, r) => acc + r.nota, 0) / reviews.length).toFixed(1);
+        document.getElementById('profile-stat-avg').textContent = media;
+    } else {
+        document.getElementById('profile-stat-avg').textContent = '—';
+    }
+
+    renderProfileMovieList('profile-rated-list', reviews.map(r => {
+        const filme = filmes.find(f => f.id === r.filmeId);
+        return filme ? { filme, nota: r.nota, data: r.data } : null;
+    }).filter(Boolean), 'avaliados');
+
+    renderProfileMovieList('profile-favorites-list', favoritos.map(id => {
+        const filme = filmes.find(f => f.id === id);
+        const review = reviews.find(r => r.filmeId === id);
+        return filme ? { filme, nota: review?.nota, data: review?.data } : null;
+    }).filter(Boolean), 'favoritos');
+}
+
+function renderProfileMovieList(containerId, items, tipo) {
+    const container = document.getElementById(containerId);
+
+    if (items.length === 0) {
+        const msg = tipo === 'favoritos'
+            ? 'Nenhum filme favorito ainda. Favorite títulos no catálogo!'
+            : 'Você ainda não avaliou nenhum filme.';
+        container.innerHTML = `
+            <div class="empty-state profile-empty">
+                <span>${tipo === 'favoritos' ? '❤️' : '🎬'}</span>
+                <p>${msg}</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = items.map(({ filme, nota }) => `
+        <article class="profile-movie-card" onclick="abrirFilmeDoPerfil('${filme.id}')">
+            <img src="${filme.imagem}" alt="${filme.titulo}" loading="lazy">
+            <div class="profile-movie-info">
+                <h4>${filme.titulo}</h4>
+                <span class="meta">${filme.genero} · ${filme.ano}</span>
+                ${nota ? `<span class="profile-movie-rating">★ ${nota}</span>` : ''}
+            </div>
+            <span class="profile-movie-arrow">→</span>
+        </article>
+    `).join('');
+}
+
+function abrirFilmeDoPerfil(filmeId) {
+    closeProfile();
+    closePublicProfile();
+    abrirFilme(filmeId);
+}
+
+function closeProfile() {
+    document.getElementById('profile-modal').style.display = 'none';
+}
+
+function closeProfileOnBackdrop(e) {
+    if (e.target.id === 'profile-modal') closeProfile();
+}
+
+function salvarPerfil() {
+    if (!sessaoAtual) return;
+
+    const nome = document.getElementById('profile-name').value.trim();
+    const senhaAtual = document.getElementById('profile-senha-atual').value;
+    const senhaNova = document.getElementById('profile-senha-nova').value;
+    const erroEl = document.getElementById('profile-settings-error');
+
+    if (!nome) {
+        erroEl.textContent = 'Informe um nome válido.';
+        return;
+    }
+
+    const usuarios = getUsuarios();
+    const usuario = usuarios.find(u => u.id === sessaoAtual.id);
+    if (!usuario) return;
+
+    if (senhaNova) {
+        if (!senhaAtual) {
+            erroEl.textContent = 'Informe a senha atual para alterá-la.';
+            return;
+        }
+        if (usuario.senha !== senhaAtual) {
+            erroEl.textContent = 'Senha atual incorreta.';
+            return;
+        }
+        if (senhaNova.length < 6) {
+            erroEl.textContent = 'A nova senha deve ter pelo menos 6 caracteres.';
+            return;
+        }
+        usuario.senha = senhaNova;
+    }
+
+    usuario.nome = nome;
+    if (!usuario.favoritos) usuario.favoritos = [];
+
+    saveUsuarios(usuarios);
+
+    sessaoAtual.nome = nome;
+    sessaoAtual.avatar = usuario.avatar;
+    saveSessao(sessaoAtual);
+
+    const reviews = getReviews().map(r => {
+        if (r.userId === sessaoAtual.id) {
+            r.userName = nome;
+            r.userAvatar = usuario.avatar;
+        }
+        if (Array.isArray(r.respostas)) {
+            r.respostas = r.respostas.map(resp => {
+                if (resp.userId === sessaoAtual.id) {
+                    resp.userName = nome;
+                    resp.userAvatar = usuario.avatar;
+                }
+                return resp;
+            });
+        }
+        return r;
+    });
+    saveReviews(reviews);
+
+    document.getElementById('profile-display-name').textContent = nome;
+    document.getElementById('profile-senha-atual').value = '';
+    document.getElementById('profile-senha-nova').value = '';
+    erroEl.textContent = '';
+
+    atualizarUIAuth();
+    renderProfileContent();
+    showToast('Perfil atualizado!');
+    renderFilmes();
+    if (filmeAtual) abrirFilme(filmeAtual.id, true);
+}
+
+function salvarAvatarAutomatico(dataUrl) {
+    if (!sessaoAtual) return;
+
+    const usuarios = getUsuarios();
+    const usuario = usuarios.find(u => u.id === sessaoAtual.id);
+    if (!usuario) return;
+
+    usuario.avatar = dataUrl;
+    saveUsuarios(usuarios);
+
+    sessaoAtual.avatar = dataUrl;
+    saveSessao(sessaoAtual);
+
+    const reviews = getReviews().map(r => {
+        if (r.userId === sessaoAtual.id) {
+            r.userAvatar = dataUrl;
+        }
+        if (Array.isArray(r.respostas)) {
+            r.respostas = r.respostas.map(resp => {
+                if (resp.userId === sessaoAtual.id) {
+                    resp.userAvatar = dataUrl;
+                }
+                return resp;
+            });
+        }
+        return r;
+    });
+    saveReviews(reviews);
+
+    document.getElementById('profile-preview-img').src = dataUrl;
+    atualizarUIAuth();
+    showToast('Foto de perfil atualizada!');
+}
+
+document.getElementById('profile-upload').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+        showToast('A imagem deve ter no máximo 2 MB.', 'error');
+        this.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        salvarAvatarAutomatico(e.target.result);
+    };
+    reader.readAsDataURL(file);
+    this.value = '';
+});
+
+function pausarVideosAnuncio() {
+    ['ad-sidebar-video', 'ad-modal-video'].forEach(id => {
+        const video = document.getElementById(id);
+        if (video) video.pause();
+    });
+}
+
+function fecharAnuncio() {
+    const sidebar = document.getElementById('ad-sidebar');
+    sidebar.classList.add('closed');
+    const video = document.getElementById('ad-sidebar-video');
+    if (video) video.pause();
+    localStorage.setItem('ddc_ad_closed_at', Date.now().toString());
+    agendarAnuncio(AD_INTERVALO_MS);
+}
+
+function agendarAnuncio(atraso) {
+    clearTimeout(adTimer);
+    adTimer = setTimeout(mostrarAnuncio, atraso);
+}
+
+function mostrarAnuncio() {
+    const sidebar = document.getElementById('ad-sidebar');
+    if (!sidebar) return;
+
+    sidebar.classList.remove('closed');
+    const video = document.getElementById('ad-sidebar-video');
+    if (video) {
+        video.currentTime = 0;
+        video.muted = true;
+        video.play().catch(() => {});
+    }
+}
+
+function initAnuncio() {
+    const sidebar = document.getElementById('ad-sidebar');
+    if (sidebar) sidebar.classList.add('closed');
+
+    const fechadoEm = parseInt(localStorage.getItem('ddc_ad_closed_at') || '0', 10);
+    if (!fechadoEm) {
+        agendarAnuncio(AD_PRIMEIRO_ATRASO_MS);
+        return;
+    }
+
+    const restante = AD_INTERVALO_MS - (Date.now() - fechadoEm);
+    agendarAnuncio(restante > 0 ? restante : AD_PRIMEIRO_ATRASO_MS);
+}
+
+function abrirAdModal(autoplay = false) {
+    const modal = document.getElementById('ad-modal');
+    modal.style.display = 'flex';
+    const sidebarVideo = document.getElementById('ad-sidebar-video');
+    if (sidebarVideo) sidebarVideo.pause();
+    const video = document.getElementById('ad-modal-video');
+    if (autoplay && video) {
+        video.currentTime = 0;
+        const tentarTocar = (mutado) => {
+            video.muted = mutado;
+            return video.play();
+        };
+        tentarTocar(false).catch(() => tentarTocar(true).catch(() => {}));
+    }
+}
+
+function fecharAdModal() {
+    document.getElementById('ad-modal').style.display = 'none';
+    const video = document.getElementById('ad-modal-video');
+    if (video) video.pause();
+}
+
+function closeAdModalOnBackdrop(e) {
+    if (e.target.id === 'ad-modal') fecharAdModal();
+}
+
+function assistirCampanha() {
+    const video = document.getElementById('ad-modal-video');
+    if (!video) return;
+    video.currentTime = 0;
+    video.muted = false;
+    video.play().catch(() => {
+        video.muted = true;
+        video.play().catch(() => {});
+    });
+}
+
+function abrirSaibaMais() {
+    window.open(CAMPANHA_URL, '_blank', 'noopener,noreferrer');
+}
+
+function handleSearchKey(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        abrirTelaBusca();
+    }
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        fecharTodosModais();
+        fecharBusca();
+        fecharTelaBusca();
+        pausarVideosAnuncio();
+    }
+});
+
+document.addEventListener('click', e => {
+    const searchWrap = document.getElementById('nav-search');
+    if (searchWrap && !searchWrap.contains(e.target)) {
+        fecharBusca();
+    }
+});
+
+document.getElementById('search-screen-input')?.addEventListener('input', function() {
+    document.getElementById('user-search-input').value = this.value;
+});
+
+document.getElementById('user-search-input')?.addEventListener('input', function() {
+    const screenInput = document.getElementById('search-screen-input');
+    if (screenInput) screenInput.value = this.value;
+});
+
+document.getElementById('login-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') fazerLogin();
+});
+document.getElementById('register-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') fazerCadastro();
+});
+
+document.getElementById('forgot-password-confirm').addEventListener('keydown', e => {
+    if (e.key === 'Enter') recuperarSenha();
+});
+
+function migrarReviews() {
+    const reviews = getReviews();
+    let alterou = false;
+    reviews.forEach(r => {
+        if (!Array.isArray(r.respostas)) {
+            r.respostas = [];
+            alterou = true;
+        }
+        r.respostas.forEach(resp => {
+            if (!Array.isArray(resp.likes)) {
+                resp.likes = [];
+                alterou = true;
+            }
+        });
+    });
+    if (alterou) saveReviews(reviews);
+}
+
+function migrarUsuarios() {
+    const usuarios = getUsuarios();
+    let alterou = false;
+    usuarios.forEach(u => {
+        if (!u.favoritos) {
+            u.favoritos = [];
+            alterou = true;
+        }
+    });
+    if (alterou) saveUsuarios(usuarios);
+}
+
+seedReviewsIniciais();
+migrarUsuarios();
+migrarReviews();
+initAnuncio();
+sessaoAtual = getSessao();
+atualizarUIAuth();
+renderFilmes();
+</script>
+</body>
+</html>
