@@ -1,0 +1,7 @@
+.git
+.gitignore
+api/.env
+banco
+*.md
+Dockerfile
+.dockerignore
