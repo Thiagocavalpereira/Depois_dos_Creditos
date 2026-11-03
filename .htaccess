@@ -1,0 +1,4 @@
+# Apache: manda /api/* para o roteador PHP
+RewriteEngine On
+RewriteRule ^api/index\.php$ - [L]
+RewriteRule ^api/(.*)$ api/index.php [QSA,L]

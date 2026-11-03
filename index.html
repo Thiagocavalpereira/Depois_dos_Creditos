@@ -503,152 +503,68 @@
 <script>
 const AVATAR_PADRAO = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
 
-const filmes = [
-    {
-        id: 'duna-parte-dois',
-        titulo: 'Duna: Parte Dois',
-        genero: 'Sci-Fi',
-        ano: 2024,
-        imagem: 'https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/8c/49/56/8c4956c5-a2c0-c2e2-d890-09b52b668238/de0105dd-710c-4232-b517-282f14bade4b_DUNE_PART2_PVOD_H_DD_KA_TT_CVRART_3840x2160_300dpi_BR-p3.lsr/1200x675.jpg',
-        descricao: 'Paul Atreides une-se a Chani e aos Fremen enquanto busca vingança contra os conspiradores que destruíram sua família.'
-    },
-    {
-        id: 'oppenheimer',
-        titulo: 'Oppenheimer',
-        genero: 'Drama',
-        ano: 2023,
-        imagem: 'https://images4.alphacoders.com/132/thumb-1920-1323605.jpeg',
-        descricao: 'A história do físico J. Robert Oppenheimer e seu papel no desenvolvimento da bomba atômica.'
-    },
-    {
-        id: 'the-batman',
-        titulo: 'The Batman',
-        genero: 'Ação',
-        ano: 2022,
-        imagem: 'https://wallpaperbat.com/img/14501460-the-batman-2021-desktop-wallpaper.jpg',
-        descricao: 'Batman investiga a corrupção em Gotham quando o Charada inicia uma série de assassinatos.'
-    },
-    {
-        id: 'blade-runner-2049',
-        titulo: 'Blade Runner 2049',
-        genero: 'Sci-Fi',
-        ano: 2017,
-        imagem: 'https://images4.alphacoders.com/866/866590.jpg',
-        descricao: 'Um jovem blade runner descobre um segredo enterrado há muito tempo que pode mergulhar a sociedade no caos.'
-    },
-    {
-        id: 'interestelar',
-        titulo: 'Interestelar',
-        genero: 'Sci-Fi',
-        ano: 2014,
-        imagem: 'https://m.media-amazon.com/images/S/pv-target-images/144718a9727062e06b9ebb1e1e7cc389d6eb2a6732dff8ae688c6487eebbdef8.jpg',
-        descricao: 'Uma equipe de exploradores viaja por um buraco de minhoca no espaço para garantir a sobrevivência da humanidade.'
-    },
-    {
-        id: 'parasita',
-        titulo: 'Parasita',
-        genero: 'Thriller',
-        ano: 2019,
-        imagem: 'https://images2.alphacoders.com/112/1122541.jpg',
-        descricao: 'A simbiose entre duas famílias — uma rica e outra pobre — gera consequências inesperadas.'
-    },
-    {
-        id: 'matrix',
-        titulo: 'Matrix',
-        genero: 'Sci-Fi',
-        ano: 1999,
-        imagem: 'img/matrix-capa.jpg',
-        descricao: 'Um hacker descobre que a realidade é uma simulação e é recrutado para a rebelião contra as máquinas.'
-    },
-    {
-        id: 'coringa',
-        titulo: 'Coringa',
-        genero: 'Drama',
-        ano: 2019,
-        imagem: 'https://m.media-amazon.com/images/S/pv-target-images/7de9bdaf287c0579ea16a70a62259ef00415feb09d1b59f49436f3b1571d3763.jpg',
-        descricao: 'A origem trágica de Arthur Fleck, um comediante fracassado que se transforma no icônico vilão de Gotham.'
-    },
-    {
-        id: 'vingadores-ultimato',
-        titulo: 'Vingadores: Ultimato',
-        genero: 'Ação',
-        ano: 2019,
-        imagem: 'https://blog.explorersclub.com.br/wp-content/uploads/2024/04/Vingadores-Ultimato.webp',
-        descricao: 'Os Vingadores restantes se unem para reverter o estalo de Thanos e restaurar o universo.'
-    },
-    {
-        id: 'pulp-fiction',
-        titulo: 'Pulp Fiction',
-        genero: 'Crime',
-        ano: 1994,
-        imagem: 'https://m.media-amazon.com/images/S/pv-target-images/a5c7216f2dcbdea86f7f349a01241116d4513f5bc2ea052cd2a7f96ea0d66ffc.jpg',
-        descricao: 'Histórias entrelaçadas de criminosos, boxeadores e gângsters em Los Angeles.'
-    },
-    {
-        id: 'o-poderoso-chefao',
-        titulo: 'O Poderoso Chefão',
-        genero: 'Crime',
-        ano: 1972,
-        imagem: 'https://fbi.cults3d.com/uploaders/34614944/illustration-file/970dafa2-ef44-4195-91d7-d0e442f3e6a9/6e735d75e9147233c72226af48fb1cf2c0fe1918275b863a3e9800e09e7e2c43.jpg',
-        descricao: 'A saga da família Corleone e sua ascensão no submundo do crime organizado.'
-    },
-    {
-        id: 'clube-da-luta',
-        titulo: 'Clube da Luta',
-        genero: 'Drama',
-        ano: 1999,
-        imagem: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT960ZQVtTxQ3p8NNIB27Ria9Kiy239K4ZRXh8_LfyI26CD8b-JpGf_2A&s=10',
-        descricao: 'Um funcionario insone e um vendedor de sabonetes formam um clube de luta clandestino.'
-    },
-    {
-        id: 'a-origem',
-        titulo: 'A Origem',
-        genero: 'Sci-Fi',
-        ano: 2010,
-        imagem: 'https://m.media-amazon.com/images/S/pv-target-images/4a14a38007c2c2b74f152b2e90c20eee73202fd82b9ce6426578d21ac7598b85.png',
-        descricao: 'Um ladrão especializado em roubar segredos do subconsciente é incumbido de plantar uma ideia.'
-    },
-    {
-        id: 'whiplash',
-        titulo: 'Whiplash',
-        genero: 'Drama',
-        ano: 2014,
-        imagem: 'https://wallpapers.com/images/hd/whiplash-movie-drum-k3uai9xoihgly7um.jpg',
-        descricao: 'Um jovem baterista enfrenta um instrutor implacável em uma escola de música de elite.'
-    },
-    {
-        id: 'mad-max-fury-road',
-        titulo: 'Mad Max: Estrada da Fúria',
-        genero: 'Ação',
-        ano: 2015,
-        imagem: 'https://obarquinhocultural.com/wp-content/uploads/2016/03/mad-max-estrada-da-furia-fury-road-imperdc3advel-resenha-crc3adtica-zoom-news.jpg',
-        descricao: 'Max e Furiosa fogem de um tirano em uma perseguição implacável pelo deserto pós-apocalíptico.'
-    },
-    {
-        id: 'everything-everywhere',
-        titulo: 'Tudo em Todo Lugar ao Mesmo Tempo',
-        genero: 'Sci-Fi',
-        ano: 2022,
-        imagem: 'https://folhacg.com.br/wp-content/uploads/2023/02/Everything-Everywhere-Principal.jpg',
-        descricao: 'Uma lavanderia é arrastada para uma aventura multiversal quando precisa salvar a existência.'
-    },
-    {
-        id: 'barbie',
-        titulo: 'Barbie',
-        genero: 'Comédia',
-        ano: 2023,
-        imagem: 'https://wallpapers.com/images/featured/barbie-movie-ttzb5nkst5zsb5rn.jpg',
-        descricao: 'Barbie vive uma crise existencial e parte para o mundo real em busca de respostas.'
-    },
-    {
-    id: 'carros-2',
-    titulo: 'Carros 2',
-    genero: 'Animação',
-    ano: 2011,
-    imagem: 'https://images4.alphacoders.com/144/144758.jpg',
-    descricao: 'O astro das corridas Relâmpago McQueen e seu amigo Mate viajam pelo mundo para o Grand Prix Mundial, mas Mate acaba se envolvendo em uma intriga internacional de espionagem.'
+// ===== Comunicação com o back-end PHP (pasta /api) =====
+const API_BASE = 'api';
+
+async function api(metodo, caminho, corpo) {
+    const opcoes = { method: metodo, credentials: 'same-origin', headers: {} };
+    if (metodo !== 'GET') {
+        opcoes.headers['Content-Type'] = 'application/json';
+        opcoes.body = JSON.stringify(corpo || {});
     }
-];
+    let resp;
+    try {
+        resp = await fetch(`${API_BASE}${caminho}`, opcoes);
+    } catch (e) {
+        throw new Error('Não foi possível conectar ao servidor.');
+    }
+    let dados = null;
+    try { dados = await resp.json(); } catch (e) { /* resposta sem JSON */ }
+    if (!resp.ok) {
+        const err = new Error((dados && dados.erro) || 'Erro inesperado no servidor.');
+        err.status = resp.status;
+        throw err;
+    }
+    return dados;
+}
+
+let filmes = [];
+let destaqueSlug = null;
+let denunciasCache = [];
+let buscaSeq = 0;
+
+async function carregarFilmes() {
+    const [lista, destaque] = await Promise.all([
+        api('GET', '/filmes'),
+        api('GET', '/destaque-semana').catch(() => null)
+    ]);
+    filmes = lista.filmes;
+    destaqueSlug = destaque ? destaque.filme.id : null;
+    renderFilmes();
+}
+
+function sessaoDoUsuario(u) {
+    return { id: u.id, nome: u.nome, avatar: u.avatar, email: u.email, papel: u.papel, favoritos: u.favoritos || [] };
+}
+
+async function carregarSessao() {
+    try {
+        const r = await api('GET', '/auth/sessao');
+        sessaoAtual = r.logado ? sessaoDoUsuario(r.usuario) : null;
+    } catch (e) {
+        sessaoAtual = null;
+    }
+    await carregarDenuncias();
+}
+
+async function carregarDenuncias() {
+    if (!sessaoAtual) { denunciasCache = []; return; }
+    try {
+        denunciasCache = (await api('GET', '/denuncias')).denuncias;
+    } catch (e) {
+        denunciasCache = [];
+    }
+}
 
 let sessaoAtual = null;
 let filmeAtual = null;
@@ -677,160 +593,7 @@ function fecharTodosModais() {
 }
 
 function getDenuncias() {
-    return JSON.parse(localStorage.getItem('ddc_denuncias') || '[]');
-}
-
-function saveDenuncias(denuncias) {
-    localStorage.setItem('ddc_denuncias', JSON.stringify(denuncias));
-}
-
-function getUsuarios() {
-    return JSON.parse(localStorage.getItem('ddc_usuarios') || '[]');
-}
-
-function saveUsuarios(usuarios) {
-    localStorage.setItem('ddc_usuarios', JSON.stringify(usuarios));
-}
-
-function getReviews() {
-    return JSON.parse(localStorage.getItem('ddc_reviews') || '[]');
-}
-
-function saveReviews(reviews) {
-    localStorage.setItem('ddc_reviews', JSON.stringify(reviews));
-}
-
-function getSessao() {
-    return JSON.parse(localStorage.getItem('ddc_sessao') || 'null');
-}
-
-function saveSessao(sessao) {
-    if (sessao) {
-        localStorage.setItem('ddc_sessao', JSON.stringify(sessao));
-    } else {
-        localStorage.removeItem('ddc_sessao');
-    }
-}
-
-function seedReviewsIniciais() {
-    if (localStorage.getItem('ddc_seeded')) return;
-
-    const reviews = [
-        {
-            id: crypto.randomUUID(),
-            filmeId: 'duna-parte-dois',
-            userId: 'seed-ana',
-            userName: 'Ana Silva',
-            userAvatar: AVATAR_PADRAO,
-            nota: 9,
-            texto: 'Visual absolutamente impecável. A trilha sonora me arrepiou do começo ao fim. Um pouco lento no meio, mas compensa demais.',
-            likes: [],
-            respostas: [
-                {
-                    id: crypto.randomUUID(),
-                    parentId: null,
-                    userId: 'seed-carlos',
-                    userName: 'Carlos Mendes',
-                    userAvatar: AVATAR_PADRAO,
-                    texto: 'Concordo com a trilha. Achei o meio lento também, mas o último ato compensa tudo.',
-                    likes: ['seed-ana'],
-                    data: '2026-07-20T16:10:00.000Z'
-                }
-            ],
-            data: '2026-07-20T14:30:00.000Z'
-        },
-        {
-            id: crypto.randomUUID(),
-            filmeId: 'duna-parte-dois',
-            userId: 'seed-carlos',
-            userName: 'Carlos Mendes',
-            userAvatar: AVATAR_PADRAO,
-            nota: 8,
-            texto: 'Muito superior ao primeiro filme. Villeneuve domina o épico como poucos.',
-            likes: ['seed-ana'],
-            respostas: [],
-            data: '2026-07-22T09:15:00.000Z'
-        },
-        {
-            id: crypto.randomUUID(),
-            filmeId: 'oppenheimer',
-            userId: 'seed-lucas',
-            userName: 'Lucas Ferreira',
-            userAvatar: AVATAR_PADRAO,
-            nota: 10,
-            texto: 'Pesado, intenso e magistral. Cillian Murphy merece cada elogio.',
-            likes: ['seed-ana', 'seed-carlos'],
-            respostas: [],
-            data: '2026-07-18T20:00:00.000Z'
-        },
-        {
-            id: crypto.randomUUID(),
-            filmeId: 'the-batman',
-            userId: 'seed-marina',
-            userName: 'Marina Costa',
-            userAvatar: AVATAR_PADRAO,
-            nota: 9,
-            texto: 'O tom noir funciona perfeitamente. Pattinson é um Batman surpreendente.',
-            likes: ['seed-lucas'],
-            respostas: [],
-            data: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
-        },
-        {
-            id: crypto.randomUUID(),
-            filmeId: 'interestelar',
-            userId: 'seed-ana',
-            userName: 'Ana Silva',
-            userAvatar: AVATAR_PADRAO,
-            nota: 10,
-            texto: 'Obra-prima absoluta. Cada cena é emocionante e a trilha do Hans Zimmer é inesquecível.',
-            likes: ['seed-carlos', 'seed-lucas'],
-            respostas: [],
-            data: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString()
-        },
-        {
-            id: crypto.randomUUID(),
-            filmeId: 'oppenheimer',
-            userId: 'seed-carlos',
-            userName: 'Carlos Mendes',
-            userAvatar: AVATAR_PADRAO,
-            nota: 9,
-            texto: 'Nolan no auge. A construção de tensão é magistral do início ao fim.',
-            likes: ['seed-ana'],
-            respostas: [],
-            data: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString()
-        }
-    ];
-
-    saveReviews(reviews);
-    localStorage.setItem('ddc_seeded', 'true');
-}
-
-function getUsuarioById(userId) {
-    const usuario = getUsuarios().find(u => u.id === userId);
-    if (usuario) return usuario;
-
-    const review = getReviews().find(r => r.userId === userId);
-    if (review) {
-        return {
-            id: userId,
-            nome: review.userName,
-            avatar: review.userAvatar || AVATAR_PADRAO,
-            favoritos: []
-        };
-    }
-
-    for (const r of getReviews()) {
-        const resposta = (r.respostas || []).find(resp => resp.userId === userId);
-        if (resposta) {
-            return {
-                id: userId,
-                nome: resposta.userName,
-                avatar: resposta.userAvatar || AVATAR_PADRAO,
-                favoritos: []
-            };
-        }
-    }
-    return null;
+    return denunciasCache;
 }
 
 function buscarFilmes(termo) {
@@ -842,31 +605,6 @@ function buscarFilmes(termo) {
         f.genero.toLowerCase().includes(query) ||
         String(f.ano).includes(query)
     ).slice(0, 8);
-}
-
-function buscarUsuariosLista(termo) {
-    const query = termo.trim().toLowerCase();
-    if (!query) return [];
-
-    const usuariosMap = new Map();
-
-    getUsuarios().forEach(u => {
-        if (u.nome.toLowerCase().includes(query)) {
-            usuariosMap.set(u.id, { id: u.id, nome: u.nome, avatar: u.avatar || AVATAR_PADRAO });
-        }
-    });
-
-    getReviews().forEach(r => {
-        if (r.userName.toLowerCase().includes(query) && !usuariosMap.has(r.userId)) {
-            usuariosMap.set(r.userId, {
-                id: r.userId,
-                nome: r.userName,
-                avatar: r.userAvatar || AVATAR_PADRAO
-            });
-        }
-    });
-
-    return Array.from(usuariosMap.values()).slice(0, 8);
 }
 
 function renderResultadoFilme(f) {
@@ -897,12 +635,24 @@ function renderResultadoUsuario(u) {
     `;
 }
 
-function buscarGlobal(termo, origem = 'nav') {
+async function buscarGlobal(termo, origem = 'nav') {
     ultimaBuscaTermo = termo;
+    const seq = ++buscaSeq;
     const query = termo.trim().toLowerCase();
 
     const filmesResult = (searchFilterAtual === 'usuarios') ? [] : buscarFilmes(termo);
-    const usuariosResult = (searchFilterAtual === 'filmes') ? [] : buscarUsuariosLista(termo);
+    let usuariosResult = [];
+
+    if (query && searchFilterAtual !== 'filmes') {
+        await new Promise(r => setTimeout(r, 200));
+        if (seq !== buscaSeq) return;
+        try {
+            usuariosResult = (await api('GET', `/busca?q=${encodeURIComponent(termo.trim())}&tipo=usuarios`)).usuarios;
+        } catch (e) {
+            usuariosResult = [];
+        }
+        if (seq !== buscaSeq) return;
+    }
 
     if (origem === 'nav' || origem === 'both') {
         const container = document.getElementById('search-results');
@@ -1009,48 +759,7 @@ function fecharBusca() {
 }
 
 function getDestaqueSemana() {
-    const umaSemanaAtras = new Date();
-    umaSemanaAtras.setDate(umaSemanaAtras.getDate() - 7);
-
-    const reviewsRecentes = getReviews().filter(r => new Date(r.data) >= umaSemanaAtras);
-    const mediasPorFilme = {};
-
-    reviewsRecentes.forEach(r => {
-        if (!mediasPorFilme[r.filmeId]) {
-            mediasPorFilme[r.filmeId] = { soma: 0, count: 0 };
-        }
-        mediasPorFilme[r.filmeId].soma += r.nota;
-        mediasPorFilme[r.filmeId].count += 1;
-    });
-
-    let melhorId = null;
-    let melhorMedia = -1;
-    let melhorCount = 0;
-
-    Object.entries(mediasPorFilme).forEach(([filmeId, dados]) => {
-        const media = dados.soma / dados.count;
-        if (media > melhorMedia || (media === melhorMedia && dados.count > melhorCount)) {
-            melhorMedia = media;
-            melhorCount = dados.count;
-            melhorId = filmeId;
-        }
-    });
-
-    if (melhorId) {
-        return filmes.find(f => f.id === melhorId) || filmes[0];
-    }
-
-    let fallbackId = null;
-    let fallbackMedia = -1;
-    filmes.forEach(f => {
-        const media = calcularMedia(f.id);
-        if (media && parseFloat(media) > fallbackMedia) {
-            fallbackMedia = parseFloat(media);
-            fallbackId = f.id;
-        }
-    });
-
-    return filmes.find(f => f.id === fallbackId) || filmes[0];
+    return filmes.find(f => f.id === destaqueSlug) || filmes[0] || null;
 }
 
 function abrirFilmeDestaque() {
@@ -1058,7 +767,7 @@ function abrirFilmeDestaque() {
 }
 
 function getReviewDoUsuario(filmeId, userId) {
-    return getReviews().find(r => r.filmeId === filmeId && r.userId === userId) || null;
+    return reviewsAtuais.find(r => r.filmeId === filmeId && r.userId === userId) || null;
 }
 
 function usuarioJaAvaliou(filmeId, userId) {
@@ -1066,33 +775,27 @@ function usuarioJaAvaliou(filmeId, userId) {
 }
 
 function getFavoritos(userId) {
-    const usuario = getUsuarioById(userId);
-    return usuario?.favoritos || [];
+    return (sessaoAtual && sessaoAtual.id === String(userId)) ? (sessaoAtual.favoritos || []) : [];
 }
 
 function isFavorito(filmeId, userId) {
     return getFavoritos(userId).includes(filmeId);
 }
 
-function toggleFavorito() {
+async function toggleFavorito() {
     if (!sessaoAtual || !filmeAtual) return;
 
-    const usuarios = getUsuarios();
-    const usuario = usuarios.find(u => u.id === sessaoAtual.id);
-    if (!usuario) return;
-
-    if (!usuario.favoritos) usuario.favoritos = [];
-
-    const idx = usuario.favoritos.indexOf(filmeAtual.id);
-    if (idx >= 0) {
-        usuario.favoritos.splice(idx, 1);
-        showToast('Removido dos favoritos.');
-    } else {
-        usuario.favoritos.push(filmeAtual.id);
-        showToast('Adicionado aos favoritos!');
+    try {
+        const r = await api('POST', `/filmes/${encodeURIComponent(filmeAtual.id)}/favorito`);
+        const fav = new Set(sessaoAtual.favoritos || []);
+        if (r.favorito) fav.add(filmeAtual.id); else fav.delete(filmeAtual.id);
+        sessaoAtual.favoritos = Array.from(fav);
+        showToast(r.favorito ? 'Adicionado aos favoritos!' : 'Removido dos favoritos.');
+    } catch (e) {
+        showToast(e.message, 'error');
+        return;
     }
 
-    saveUsuarios(usuarios);
     atualizarBotaoFavorito();
     if (document.getElementById('profile-modal').style.display === 'flex') {
         renderProfileContent();
@@ -1179,14 +882,13 @@ function formatarData(iso) {
 }
 
 function calcularMedia(filmeId) {
-    const reviews = getReviews().filter(r => r.filmeId === filmeId);
-    if (reviews.length === 0) return null;
-    const soma = reviews.reduce((acc, r) => acc + r.nota, 0);
-    return (soma / reviews.length).toFixed(1);
+    const f = filmes.find(x => x.id === filmeId);
+    return f && f.media ? f.media : null;
 }
 
 function contarReviews(filmeId) {
-    return getReviews().filter(r => r.filmeId === filmeId).length;
+    const f = filmes.find(x => x.id === filmeId);
+    return f ? f.totalReviews : 0;
 }
 
 function showToast(mensagem, tipo = 'success') {
@@ -1257,6 +959,7 @@ function renderFilmes() {
 
 function atualizarHero() {
     const destaque = getDestaqueSemana();
+    if (!destaque) return;
     destaqueSemanaId = destaque.id;
     const media = calcularMedia(destaque.id);
     const total = contarReviews(destaque.id);
@@ -1318,7 +1021,7 @@ function showForgotPassword() {
     document.getElementById('forgot-error').textContent = '';
 }
 
-function recuperarSenha() {
+async function recuperarSenha() {
     const email = document.getElementById('forgot-email').value.trim().toLowerCase();
     const senha = document.getElementById('forgot-password').value;
     const confirmar = document.getElementById('forgot-password-confirm').value;
@@ -1341,15 +1044,12 @@ function recuperarSenha() {
         return;
     }
 
-    const usuarios = getUsuarios();
-    const usuario = usuarios.find(u => u.email === email);
-    if (!usuario) {
-        erroEl.textContent = 'Nenhuma conta encontrada com este email.';
+    try {
+        await api('POST', '/auth/recuperar-senha', { email, senha, confirmar });
+    } catch (e) {
+        erroEl.textContent = e.message;
         return;
     }
-
-    usuario.senha = senha;
-    saveUsuarios(usuarios);
 
     document.getElementById('forgot-email').value = '';
     document.getElementById('forgot-password').value = '';
@@ -1360,11 +1060,12 @@ function recuperarSenha() {
     showLogin();
 }
 
-function fazerCadastro() {
+async function fazerCadastro() {
     const nome = document.getElementById('register-name').value.trim();
     const email = document.getElementById('register-email').value.trim().toLowerCase();
     const senha = document.getElementById('register-password').value;
     const erroEl = document.getElementById('register-error');
+    erroEl.textContent = '';
 
     if (!nome || !email || !senha) {
         erroEl.textContent = 'Preencha todos os campos.';
@@ -1379,26 +1080,14 @@ function fazerCadastro() {
         return;
     }
 
-    const usuarios = getUsuarios();
-    if (usuarios.some(u => u.email === email)) {
-        erroEl.textContent = 'Este email já está cadastrado.';
+    try {
+        const r = await api('POST', '/auth/cadastro', { nome, email, senha });
+        sessaoAtual = sessaoDoUsuario(r.usuario);
+    } catch (e) {
+        erroEl.textContent = e.message;
         return;
     }
-
-    const novoUsuario = {
-        id: crypto.randomUUID(),
-        nome,
-        email,
-        senha,
-        avatar: AVATAR_PADRAO,
-        favoritos: []
-    };
-
-    usuarios.push(novoUsuario);
-    saveUsuarios(usuarios);
-
-    sessaoAtual = { id: novoUsuario.id, nome: novoUsuario.nome, avatar: novoUsuario.avatar };
-    saveSessao(sessaoAtual);
+    denunciasCache = [];
 
     document.getElementById('register-name').value = '';
     document.getElementById('register-email').value = '';
@@ -1406,42 +1095,44 @@ function fazerCadastro() {
 
     atualizarUIAuth();
     closeAuth();
-    showToast(`Bem-vindo, ${nome}! Conta criada com sucesso.`);
+    showToast(`Bem-vindo, ${sessaoAtual.nome}! Conta criada com sucesso.`);
     renderFilmes();
     if (filmeAtual) abrirFilme(filmeAtual.id, true);
 }
 
-function fazerLogin() {
+async function fazerLogin() {
     const email = document.getElementById('login-email').value.trim().toLowerCase();
     const senha = document.getElementById('login-password').value;
     const erroEl = document.getElementById('login-error');
+    erroEl.textContent = '';
 
     if (!email || !senha) {
         erroEl.textContent = 'Preencha email e senha.';
         return;
     }
 
-    const usuario = getUsuarios().find(u => u.email === email && u.senha === senha);
-    if (!usuario) {
-        erroEl.textContent = 'Email ou senha incorretos.';
+    try {
+        const r = await api('POST', '/auth/login', { email, senha });
+        sessaoAtual = sessaoDoUsuario(r.usuario);
+    } catch (e) {
+        erroEl.textContent = e.message;
         return;
     }
-
-    sessaoAtual = { id: usuario.id, nome: usuario.nome, avatar: usuario.avatar };
-    saveSessao(sessaoAtual);
+    await carregarDenuncias();
 
     document.getElementById('login-email').value = '';
     document.getElementById('login-password').value = '';
 
     atualizarUIAuth();
     closeAuth();
-    showToast(`Olá, ${usuario.nome}!`);
+    showToast(`Olá, ${sessaoAtual.nome}!`);
     if (filmeAtual) abrirFilme(filmeAtual.id, true);
 }
 
-function logout() {
+async function logout() {
+    try { await api('POST', '/auth/logout'); } catch (e) { /* segue mesmo assim */ }
     sessaoAtual = null;
-    saveSessao(null);
+    denunciasCache = [];
     atualizarUIAuth();
     showToast('Você saiu da sua conta.');
     if (document.getElementById('filme-modal').style.display === 'flex' && filmeAtual) {
@@ -1449,16 +1140,27 @@ function logout() {
     }
 }
 
-function abrirFilme(filmeId, manterModal = false) {
-    const filme = filmes.find(f => f.id === filmeId);
-    if (!filme) return;
+async function abrirFilme(filmeId, manterModal = false) {
+    if (!filmes.some(f => f.id === filmeId)) return;
 
     if (!manterModal) {
         fecharTodosModais();
     }
 
+    let dados;
+    try {
+        dados = await api('GET', `/filmes/${encodeURIComponent(filmeId)}/reviews`);
+    } catch (e) {
+        showToast(e.message, 'error');
+        return;
+    }
+
+    const filme = dados.filme;
+    const idx = filmes.findIndex(f => f.id === filmeId);
+    if (idx >= 0) filmes[idx] = filme;
+
     filmeAtual = filme;
-    reviewsAtuais = getReviews().filter(r => r.filmeId === filmeId);
+    reviewsAtuais = dados.reviews;
 
     document.getElementById('filme-titulo').textContent = filme.titulo;
     document.getElementById('filme-meta').textContent = `${filme.genero} · ${filme.ano}`;
@@ -1513,7 +1215,7 @@ function initStarRating() {
     });
 }
 
-function enviarReview() {
+async function enviarReview() {
     if (!sessaoAtual) {
         openAuth();
         return;
@@ -1536,26 +1238,17 @@ function enviarReview() {
         return;
     }
 
-    const reviews = getReviews();
-    const novaReview = {
-        id: crypto.randomUUID(),
-        filmeId: filmeAtual.id,
-        userId: sessaoAtual.id,
-        userName: sessaoAtual.nome,
-        userAvatar: sessaoAtual.avatar || AVATAR_PADRAO,
-        nota: notaSelecionada,
-        texto,
-        likes: [],
-        respostas: [],
-        data: new Date().toISOString()
-    };
-
-    reviews.push(novaReview);
-    saveReviews(reviews);
+    const slug = filmeAtual.id;
+    try {
+        await api('POST', `/filmes/${encodeURIComponent(slug)}/reviews`, { nota: notaSelecionada, texto });
+    } catch (e) {
+        if (erroEl) erroEl.textContent = e.message;
+        return;
+    }
 
     showToast('Avaliação publicada!');
-    abrirFilme(filmeAtual.id, true);
-    renderFilmes();
+    await abrirFilme(slug, true);
+    carregarFilmes().catch(() => {});
     if (document.getElementById('profile-modal').style.display === 'flex') {
         renderProfileContent();
     }
@@ -1726,7 +1419,7 @@ function handleReplyKey(event, reviewId, parentId) {
     }
 }
 
-function enviarResposta(reviewId, parentId = null) {
+async function enviarResposta(reviewId, parentId = null) {
     if (!sessaoAtual) {
         showToast('Faça login para participar da discussão.', 'info');
         openAuth();
@@ -1742,78 +1435,46 @@ function enviarResposta(reviewId, parentId = null) {
         return;
     }
 
-    const reviews = getReviews();
-    const review = reviews.find(r => r.id === reviewId);
-    if (!review) return;
-
-    if (!Array.isArray(review.respostas)) review.respostas = [];
-
-    let parentFinal = parentId || null;
-    if (parentFinal) {
-        const pai = review.respostas.find(r => r.id === parentFinal);
-        if (pai?.parentId) parentFinal = pai.parentId;
+    try {
+        await api('POST', `/reviews/${encodeURIComponent(reviewId)}/respostas`, { texto, parentId: parentId || null });
+    } catch (e) {
+        showToast(e.message, 'error');
+        return;
     }
 
-    review.respostas.push({
-        id: crypto.randomUUID(),
-        parentId: parentFinal,
-        userId: sessaoAtual.id,
-        userName: sessaoAtual.nome,
-        userAvatar: sessaoAtual.avatar || AVATAR_PADRAO,
-        texto,
-        likes: [],
-        data: new Date().toISOString()
-    });
-
-    saveReviews(reviews);
     formularioRespostaAberto = null;
     showToast('Resposta publicada!');
 
-    if (filmeAtual) abrirFilme(filmeAtual.id, true);
+    if (filmeAtual) await abrirFilme(filmeAtual.id, true);
+}
+
+async function curtirComentario(id) {
+    if (!sessaoAtual) {
+        pedirLoginParaCurtir();
+        return;
+    }
+
+    try {
+        const r = await api('POST', `/comentarios/${encodeURIComponent(id)}/curtir`);
+        const alvo = reviewsAtuais
+            .flatMap(rv => [rv, ...(rv.respostas || [])])
+            .find(x => x.id === String(id));
+        if (alvo) {
+            alvo.likes = (alvo.likes || []).filter(u => u !== sessaoAtual.id);
+            if (r.curtido) alvo.likes.push(sessaoAtual.id);
+        }
+        renderReviews();
+    } catch (e) {
+        showToast(e.message, 'error');
+    }
 }
 
 function toggleLikeResposta(reviewId, respostaId) {
-    if (!sessaoAtual) {
-        pedirLoginParaCurtir();
-        return;
-    }
-
-    const reviews = getReviews();
-    const review = reviews.find(r => r.id === reviewId);
-    const resposta = review?.respostas?.find(r => r.id === respostaId);
-    if (!resposta) return;
-    if (!Array.isArray(resposta.likes)) resposta.likes = [];
-
-    const idx = resposta.likes.indexOf(sessaoAtual.id);
-    if (idx >= 0) {
-        resposta.likes.splice(idx, 1);
-    } else {
-        resposta.likes.push(sessaoAtual.id);
-    }
-
-    saveReviews(reviews);
-    if (filmeAtual) abrirFilme(filmeAtual.id, true);
+    return curtirComentario(respostaId);
 }
 
 function toggleLike(reviewId) {
-    if (!sessaoAtual) {
-        pedirLoginParaCurtir();
-        return;
-    }
-
-    const reviews = getReviews();
-    const review = reviews.find(r => r.id === reviewId);
-    if (!review) return;
-
-    const idx = review.likes.indexOf(sessaoAtual.id);
-    if (idx >= 0) {
-        review.likes.splice(idx, 1);
-    } else {
-        review.likes.push(sessaoAtual.id);
-    }
-
-    saveReviews(reviews);
-    abrirFilme(filmeAtual.id, true);
+    return curtirComentario(reviewId);
 }
 
 function pedirLoginParaCurtir() {
@@ -1836,39 +1497,46 @@ function ordenarReviews(tipo, btn) {
     renderReviews();
 }
 
-function openProfile() {
+async function openProfile() {
     if (!sessaoAtual) return;
+
+    let usuario;
+    try {
+        usuario = (await api('GET', '/usuarios/me')).usuario;
+    } catch (e) {
+        showToast(e.message, 'error');
+        return;
+    }
 
     fecharTodosModais();
 
-    const usuario = getUsuarioById(sessaoAtual.id);
-    if (!usuario) return;
-
-    document.getElementById('profile-display-name').textContent = sessaoAtual.nome;
+    document.getElementById('profile-display-name').textContent = usuario.nome;
     document.getElementById('profile-email').textContent = usuario.email || '';
-    document.getElementById('profile-name').value = sessaoAtual.nome;
+    document.getElementById('profile-name').value = usuario.nome;
     document.getElementById('profile-email-input').value = usuario.email || '';
-    document.getElementById('profile-preview-img').src = sessaoAtual.avatar || AVATAR_PADRAO;
+    document.getElementById('profile-preview-img').src = usuario.avatar || AVATAR_PADRAO;
     document.getElementById('profile-senha-atual').value = '';
     document.getElementById('profile-senha-nova').value = '';
     document.getElementById('profile-settings-error').textContent = '';
 
     document.querySelectorAll('.profile-tab-own').forEach(tab => tab.style.display = '');
 
+    preencherPerfilProprio(usuario);
     switchProfileTab('avaliados', document.querySelector('#profile-tabs-nav .profile-tab[data-tab="avaliados"]'));
-    renderProfileContent();
     document.getElementById('profile-modal').style.display = 'flex';
 }
 
-function abrirPerfilPublico(userId) {
-    if (sessaoAtual && sessaoAtual.id === userId) {
+async function abrirPerfilPublico(userId) {
+    if (sessaoAtual && sessaoAtual.id === String(userId)) {
         openProfile();
         return;
     }
 
-    const usuario = getUsuarioById(userId);
-    if (!usuario) {
-        showToast('Usuário não encontrado.', 'error');
+    let usuario;
+    try {
+        usuario = (await api('GET', `/usuarios/${encodeURIComponent(userId)}`)).usuario;
+    } catch (e) {
+        showToast(e.status === 404 ? 'Usuário não encontrado.' : e.message, 'error');
         return;
     }
 
@@ -1881,34 +1549,17 @@ function abrirPerfilPublico(userId) {
 
     perfilPublicoAtual = usuario;
 
-    const reviews = getReviews().filter(r => r.userId === userId);
-    const favoritos = usuario.favoritos || [];
-
     document.getElementById('public-profile-avatar').src = usuario.avatar || AVATAR_PADRAO;
     document.getElementById('public-profile-name').textContent = usuario.nome;
     document.getElementById('public-profile-since').textContent =
-        `${reviews.length} ${reviews.length === 1 ? 'avaliação publicada' : 'avaliações publicadas'}`;
+        `${usuario.totalReviews} ${usuario.totalReviews === 1 ? 'avaliação publicada' : 'avaliações publicadas'}`;
 
-    document.getElementById('public-stat-reviews').textContent = reviews.length;
-    document.getElementById('public-stat-favorites').textContent = favoritos.length;
+    document.getElementById('public-stat-reviews').textContent = usuario.totalReviews;
+    document.getElementById('public-stat-favorites').textContent = usuario.totalFavoritos;
+    document.getElementById('public-stat-avg').textContent = usuario.mediaNota || '—';
 
-    if (reviews.length > 0) {
-        const media = (reviews.reduce((acc, r) => acc + r.nota, 0) / reviews.length).toFixed(1);
-        document.getElementById('public-stat-avg').textContent = media;
-    } else {
-        document.getElementById('public-stat-avg').textContent = '—';
-    }
-
-    renderProfileMovieList('public-rated-list', reviews.map(r => {
-        const filme = filmes.find(f => f.id === r.filmeId);
-        return filme ? { filme, nota: r.nota, data: r.data } : null;
-    }).filter(Boolean), 'avaliados');
-
-    renderProfileMovieList('public-favorites-list', favoritos.map(id => {
-        const filme = filmes.find(f => f.id === id);
-        const review = reviews.find(r => r.filmeId === id);
-        return filme ? { filme, nota: review?.nota, data: review?.data } : null;
-    }).filter(Boolean), 'favoritos');
+    renderProfileMovieList('public-rated-list', usuario.avaliados, 'avaliados');
+    renderProfileMovieList('public-favorites-list', usuario.favoritos, 'favoritos');
 
     switchPublicProfileTab('public-avaliados', document.querySelector('#public-profile-modal .profile-tab[data-tab="public-avaliados"]'));
     document.getElementById('public-profile-modal').style.display = 'flex';
@@ -1937,7 +1588,7 @@ function abrirReportModal(reviewId) {
         return;
     }
 
-    const review = getReviews().find(r => r.id === reviewId);
+    const review = reviewsAtuais.find(r => r.id === reviewId);
     if (!review) return;
 
     if (review.userId === sessaoAtual.id) {
@@ -1991,40 +1642,31 @@ function closeReportOnBackdrop(e) {
     if (e.target.id === 'report-modal') closeReportModal();
 }
 
-function enviarDenuncia() {
+async function enviarDenuncia() {
     if (!sessaoAtual || !reviewParaDenunciar) return;
 
     const motivo = document.getElementById('report-motivo').value;
     const detalhes = document.getElementById('report-detalhes').value.trim();
     const erroEl = document.getElementById('report-error');
-    const review = getReviews().find(r => r.id === reviewParaDenunciar);
+    const review = reviewsAtuais.find(r => r.id === reviewParaDenunciar);
 
     if (!review) {
         erroEl.textContent = 'Avaliação não encontrada.';
         return;
     }
-
-    const denuncias = getDenuncias();
-    if (denuncias.some(d => d.reviewId === reviewParaDenunciar && d.userId === sessaoAtual.id)) {
+    if (getDenuncias().some(d => d.reviewId === reviewParaDenunciar && d.userId === sessaoAtual.id)) {
         erroEl.textContent = 'Você já denunciou esta avaliação.';
         return;
     }
 
-    const filme = filmes.find(f => f.id === review.filmeId);
+    try {
+        await api('POST', '/denuncias', { reviewId: reviewParaDenunciar, motivo, detalhes });
+    } catch (e) {
+        erroEl.textContent = e.message;
+        return;
+    }
+    await carregarDenuncias();
 
-    denuncias.push({
-        id: crypto.randomUUID(),
-        reviewId: reviewParaDenunciar,
-        userId: sessaoAtual.id,
-        userName: sessaoAtual.nome,
-        reviewUserName: review.userName,
-        filmeTitulo: filme?.titulo || 'Filme',
-        motivo,
-        detalhes,
-        data: new Date().toISOString()
-    });
-
-    saveDenuncias(denuncias);
     closeReportModal();
     showToast('Denúncia enviada. Obrigado por ajudar a comunidade!');
 
@@ -2085,33 +1727,23 @@ function switchProfileTab(tabId, btn) {
     if (tabId === 'denuncias') renderDenunciasTab();
 }
 
-function renderProfileContent() {
+function preencherPerfilProprio(usuario) {
+    document.getElementById('profile-stat-reviews').textContent = usuario.totalReviews;
+    document.getElementById('profile-stat-favorites').textContent = usuario.totalFavoritos;
+    document.getElementById('profile-stat-avg').textContent = usuario.mediaNota || '—';
+
+    renderProfileMovieList('profile-rated-list', usuario.avaliados, 'avaliados');
+    renderProfileMovieList('profile-favorites-list', usuario.favoritos, 'favoritos');
+}
+
+async function renderProfileContent() {
     if (!sessaoAtual) return;
-
-    const usuario = getUsuarioById(sessaoAtual.id);
-    const reviews = getReviews().filter(r => r.userId === sessaoAtual.id);
-    const favoritos = usuario?.favoritos || [];
-
-    document.getElementById('profile-stat-reviews').textContent = reviews.length;
-    document.getElementById('profile-stat-favorites').textContent = favoritos.length;
-
-    if (reviews.length > 0) {
-        const media = (reviews.reduce((acc, r) => acc + r.nota, 0) / reviews.length).toFixed(1);
-        document.getElementById('profile-stat-avg').textContent = media;
-    } else {
-        document.getElementById('profile-stat-avg').textContent = '—';
+    try {
+        const { usuario } = await api('GET', '/usuarios/me');
+        preencherPerfilProprio(usuario);
+    } catch (e) {
+        showToast(e.message, 'error');
     }
-
-    renderProfileMovieList('profile-rated-list', reviews.map(r => {
-        const filme = filmes.find(f => f.id === r.filmeId);
-        return filme ? { filme, nota: r.nota, data: r.data } : null;
-    }).filter(Boolean), 'avaliados');
-
-    renderProfileMovieList('profile-favorites-list', favoritos.map(id => {
-        const filme = filmes.find(f => f.id === id);
-        const review = reviews.find(r => r.filmeId === id);
-        return filme ? { filme, nota: review?.nota, data: review?.data } : null;
-    }).filter(Boolean), 'favoritos');
 }
 
 function renderProfileMovieList(containerId, items, tipo) {
@@ -2157,70 +1789,41 @@ function closeProfileOnBackdrop(e) {
     if (e.target.id === 'profile-modal') closeProfile();
 }
 
-function salvarPerfil() {
+async function salvarPerfil() {
     if (!sessaoAtual) return;
 
     const nome = document.getElementById('profile-name').value.trim();
     const senhaAtual = document.getElementById('profile-senha-atual').value;
     const senhaNova = document.getElementById('profile-senha-nova').value;
     const erroEl = document.getElementById('profile-settings-error');
+    erroEl.textContent = '';
 
     if (!nome) {
         erroEl.textContent = 'Informe um nome válido.';
         return;
     }
-
-    const usuarios = getUsuarios();
-    const usuario = usuarios.find(u => u.id === sessaoAtual.id);
-    if (!usuario) return;
-
     if (senhaNova) {
         if (!senhaAtual) {
             erroEl.textContent = 'Informe a senha atual para alterá-la.';
-            return;
-        }
-        if (usuario.senha !== senhaAtual) {
-            erroEl.textContent = 'Senha atual incorreta.';
             return;
         }
         if (senhaNova.length < 6) {
             erroEl.textContent = 'A nova senha deve ter pelo menos 6 caracteres.';
             return;
         }
-        usuario.senha = senhaNova;
     }
 
-    usuario.nome = nome;
-    if (!usuario.favoritos) usuario.favoritos = [];
+    try {
+        const r = await api('PUT', '/usuarios/me', { nome, senha_atual: senhaAtual, senha_nova: senhaNova });
+        sessaoAtual = sessaoDoUsuario(r.usuario);
+    } catch (e) {
+        erroEl.textContent = e.message;
+        return;
+    }
 
-    saveUsuarios(usuarios);
-
-    sessaoAtual.nome = nome;
-    sessaoAtual.avatar = usuario.avatar;
-    saveSessao(sessaoAtual);
-
-    const reviews = getReviews().map(r => {
-        if (r.userId === sessaoAtual.id) {
-            r.userName = nome;
-            r.userAvatar = usuario.avatar;
-        }
-        if (Array.isArray(r.respostas)) {
-            r.respostas = r.respostas.map(resp => {
-                if (resp.userId === sessaoAtual.id) {
-                    resp.userName = nome;
-                    resp.userAvatar = usuario.avatar;
-                }
-                return resp;
-            });
-        }
-        return r;
-    });
-    saveReviews(reviews);
-
-    document.getElementById('profile-display-name').textContent = nome;
+    document.getElementById('profile-display-name').textContent = sessaoAtual.nome;
     document.getElementById('profile-senha-atual').value = '';
     document.getElementById('profile-senha-nova').value = '';
-    erroEl.textContent = '';
 
     atualizarUIAuth();
     renderProfileContent();
@@ -2229,38 +1832,21 @@ function salvarPerfil() {
     if (filmeAtual) abrirFilme(filmeAtual.id, true);
 }
 
-function salvarAvatarAutomatico(dataUrl) {
+async function salvarAvatarAutomatico(dataUrl) {
     if (!sessaoAtual) return;
 
-    const usuarios = getUsuarios();
-    const usuario = usuarios.find(u => u.id === sessaoAtual.id);
-    if (!usuario) return;
+    try {
+        const r = await api('PUT', '/usuarios/me/avatar', { avatar: dataUrl });
+        sessaoAtual = sessaoDoUsuario(r.usuario);
+    } catch (e) {
+        showToast(e.message, 'error');
+        return;
+    }
 
-    usuario.avatar = dataUrl;
-    saveUsuarios(usuarios);
-
-    sessaoAtual.avatar = dataUrl;
-    saveSessao(sessaoAtual);
-
-    const reviews = getReviews().map(r => {
-        if (r.userId === sessaoAtual.id) {
-            r.userAvatar = dataUrl;
-        }
-        if (Array.isArray(r.respostas)) {
-            r.respostas = r.respostas.map(resp => {
-                if (resp.userId === sessaoAtual.id) {
-                    resp.userAvatar = dataUrl;
-                }
-                return resp;
-            });
-        }
-        return r;
-    });
-    saveReviews(reviews);
-
-    document.getElementById('profile-preview-img').src = dataUrl;
+    document.getElementById('profile-preview-img').src = sessaoAtual.avatar;
     atualizarUIAuth();
     showToast('Foto de perfil atualizada!');
+    if (filmeAtual) abrirFilme(filmeAtual.id, true);
 }
 
 document.getElementById('profile-upload').addEventListener('change', function() {
@@ -2413,43 +1999,18 @@ document.getElementById('forgot-password-confirm').addEventListener('keydown', e
     if (e.key === 'Enter') recuperarSenha();
 });
 
-function migrarReviews() {
-    const reviews = getReviews();
-    let alterou = false;
-    reviews.forEach(r => {
-        if (!Array.isArray(r.respostas)) {
-            r.respostas = [];
-            alterou = true;
-        }
-        r.respostas.forEach(resp => {
-            if (!Array.isArray(resp.likes)) {
-                resp.likes = [];
-                alterou = true;
-            }
-        });
-    });
-    if (alterou) saveReviews(reviews);
+async function iniciarApp() {
+    initAnuncio();
+    await carregarSessao();
+    atualizarUIAuth();
+    try {
+        await carregarFilmes();
+    } catch (e) {
+        showToast(e.message, 'error');
+    }
 }
 
-function migrarUsuarios() {
-    const usuarios = getUsuarios();
-    let alterou = false;
-    usuarios.forEach(u => {
-        if (!u.favoritos) {
-            u.favoritos = [];
-            alterou = true;
-        }
-    });
-    if (alterou) saveUsuarios(usuarios);
-}
-
-seedReviewsIniciais();
-migrarUsuarios();
-migrarReviews();
-initAnuncio();
-sessaoAtual = getSessao();
-atualizarUIAuth();
-renderFilmes();
+iniciarApp();
 </script>
 </body>
 </html>
